@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,7 +81,7 @@
         }
         .btn-add:hover { background-color: var(--color5); }
         .btn-delete { background-color: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; }
-       
+        
         .btn-pay {
             background-color: var(--color5);
             color: var(--color1);
@@ -304,7 +304,7 @@
             <div class="form-group">
                 <label>Topping</label>
                 <select id="conoToppingSelect">
-                    <option value="Ninguno">Ninguno</option>
+                    <option value="Sin topping">Sin topping</option>
                     <option value="Nuez">Nuez</option>
                     <option value="Almendra">Almendra</option>
                     <option value="Chispas de Yogurth">Chispas de Yogurth</option>
@@ -317,599 +317,295 @@
             </div>
         </div>
 
-        <!-- Opciones dinámicas para Frappé -->
-        <div id="frappeExtras" class="extra-options" style="display:none;">
-            <div class="form-group">
-                <label>Tamaño</label>
-                <select id="frappeTamanoSelect">
-                    <option value="Chico">Chico</option>
-                    <option value="Grande">Grande</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Tipo de Leche</label>
-                <select id="frappeLecheSelect">
-                    <option value="Entera">Entera (+$0)</option>
-                    <option value="Deslactosada">Deslactosada (+$5)</option>
-                    <option value="Almendras">Almendras (+$5)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Shot Extra Espresso</label>
-                <select id="frappeShotSelect">
-                    <option value="Sin Shot Extra">No</option>
-                    <option value="Con Shot Extra">Sí (+ $15.00)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Crema Batida</label>
-                <select id="frappeCremaSelect">
-                    <option value="Con Crema Batida">Sí</option>
-                    <option value="Sin Crema Batida">No</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Opciones dinámicas para Café Caliente -->
-        <div id="cafeExtras" class="extra-options" style="display:none;">
-            <div class="form-group">
-                <label>Tamaño</label>
-                <select id="cafeTamanoSelect">
-                    <option value="Chico">Chico</option>
-                    <option value="Grande">Grande</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Tipo de Leche</label>
-                <select id="cafeLecheSelect">
-                    <option value="Entera">Entera (+$0)</option>
-                    <option value="Deslactosada">Deslactosada (+$5)</option>
-                    <option value="Almendras">Almendras (+$5)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Shot Extra Espresso</label>
-                <select id="cafeShotSelect">
-                    <option value="Sin Shot Extra">No</option>
-                    <option value="Con Shot Extra">Sí (+ $15.00)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Tipo de Azúcar</label>
-                <select id="cafeTipoAzucarSelect">
-                    <option value="Sin Azúcar">Sin Azúcar</option>
-                    <option value="Estevia">Estevia</option>
-                    <option value="Refinada">Refinada</option>
-                    <option value="Mascabado">Mascabado</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Sobres de Azúcar</label>
-                <input type="number" id="cafeSobresAzucarInput" value="0" min="0">
-            </div>
-
-            <div class="form-group">
-                <label>Canela</label>
-                <select id="cafeCanelaSelect">
-                    <option value="Sin Canela">Sin Canela</option>
-                    <option value="Con Canela">Con Canela</option>
-                </select>
-            </div>
-        </div>
-
         <div class="form-group">
             <label>Cantidad</label>
             <input type="number" id="cantidadInput" value="1" min="1">
         </div>
 
-        <button class="btn-add" onclick="agregarAlCarrito()">➕ Agregar</button>
+        <button class="btn-add" onclick="agregarAlCarrito()">+ Agregar</button>
     </div>
 
     <!-- Carrito de Compras -->
+    <h2>Orden Actual</h2>
     <table>
         <thead>
             <tr>
                 <th>Producto</th>
-                <th>Sabor / Base</th>
-                <th>Tamaño</th>
-                <th>Fruta</th>
-                <th>Topping/Extra</th>
+                <th>Detalles / Especificaciones</th>
                 <th class="text-center">Cant.</th>
-                <th class="text-right">Precio</th>
+                <th class="text-right">P. Unit.</th>
                 <th class="text-right">Subtotal</th>
-                <th class="text-center">Acción</th>
+                <th class="text-center">Acciones</th>
             </tr>
         </thead>
-        <tbody id="carritoBody"></tbody>
+        <tbody id="carritoTabla">
+            <!-- Filas dinámicas -->
+        </tbody>
     </table>
 
-    <!-- Panel de Cobro -->
+    <!-- Barra del Total y Pago -->
     <div class="summary-bar">
-        <div>
-            <label>Método de Pago:</label>
+        <div class="form-group" style="margin: 0; min-width: 200px;">
+            <label>Método de Pago</label>
             <select id="metodoPagoSelect">
                 <option value="Efectivo">Efectivo</option>
-                <option value="Tarjeta">Tarjeta</option>
-                <option value="Transferencia">Transferencia</option>
+                <option value="Tarjeta / Transferencia">Tarjeta / Transferencia</option>
             </select>
         </div>
+        
+        <div class="total-display">
+            Total: $<span id="totalDisplay">0.00</span>
+        </div>
 
-        <div class="total-display" id="totalDisplay">TOTAL: $0.00</div>
-
-        <button class="btn-pay" id="btnCobrar" onclick="registrarEnGoogleSheets()">☁️ Cobrar y Guardar en Google Sheets</button>
+        <button class="btn-pay" onclick="registrarVenta()">Finalizar Venta</button>
     </div>
 
-    <!-- Módulo de Mini Inventario -->
+    <!-- Sección Mini Inventario -->
     <div class="inventory-section">
-        <h2>📦 Mini Inventario</h2>
+        <h2>Mini Inventario Base</h2>
         <div class="inventory-grid">
-            
-            <!-- Inventario Vórtices -->
             <div class="inventory-card">
-                <h3>Vórtices</h3>
-                <div class="inventory-count" id="stockVorticeDisplay">0 porciones</div>
+                <h3>Base para Helado (Liters/Unidades)</h3>
+                <div class="inventory-count" id="invBaseHelado">100</div>
                 <div class="inventory-inputs">
-                    <input type="number" id="inputStockVortice" placeholder="Cant." min="0" style="width: 100px;">
-                    <button class="btn-update" onclick="actualizarStock('vortice')">Ajustar</button>
+                    <input type="number" id="inputBaseHelado" placeholder="+ Cantidad" min="1">
+                    <button class="btn-update" onclick="actualizarInventario('BaseHelado')">Añadir</button>
                 </div>
             </div>
 
-            <!-- Inventario Cookies Sandwich -->
             <div class="inventory-card">
-                <h3>🍪 Masa para Cookies</h3>
-                <div class="inventory-count" id="stockCookieDisplay">0 porciones</div>
+                <h3>Conos (Piezas)</h3>
+                <div class="inventory-count" id="invConos">50</div>
                 <div class="inventory-inputs">
-                    <input type="number" id="inputStockCookie" placeholder="Cant." min="0" style="width: 100px;">
-                    <button class="btn-update" onclick="actualizarStock('cookie')">Ajustar</button>
+                    <input type="number" id="inputConos" placeholder="+ Cantidad" min="1">
+                    <button class="btn-update" onclick="actualizarInventario('Conos')">Añadir</button>
                 </div>
             </div>
 
+            <div class="inventory-card">
+                <h3>Galletas / Sandwiches (Piezas)</h3>
+                <div class="inventory-count" id="invGalletas">40</div>
+                <div class="inventory-inputs">
+                    <input type="number" id="inputGalletas" placeholder="+ Cantidad" min="1">
+                    <button class="btn-update" onclick="actualizarInventario('Galletas')">Añadir</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // ⚠️ REEMPLAZA ESTA URL CON TU LINK DE GOOGLE APPS SCRIPT
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbykFOpLZCis25xnFUwmCd4VuAAFDUrZ8X_QpCnylmZlxfltSjiUGsmIT2hIdbH41_s0/exec";
+    // URL de despliegue de Google Apps Script
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9QatR2K-8IVLvqaiWgLvO_NQ-Y-E5z-klcxxAExs4SRiwcy-tPAcWRXWCapQTiA82/exec";
 
-    const CATALOGO = {
+    // Catálogo de Productos y Precios Base
+    const catalogo = {
         "Vórtice": {
-            "Sin untado ": { "Normal": 110, "Mini": 80 },
-            "Untado Nutella": { "Normal": 110, "Mini": 80 },
-            "Untado Chocolate Abuelita": { "Normal": 110, "Mini": 80 },
-            "Untado Lechera": { "Normal": 110, "Mini": 80 },
-            "Untado Mermelada de Fresa": { "Normal": 110, "Mini": 80 },
-            "Untado Lotus": { "Normal": 120, "Mini": 90 },
-            "Untado Crema de Pistache": { "Normal": 120, "Mini": 90 }
+            precios: { "Normal": 65, "Mini": 45 },
+            variantes: ["Moka", "Matcha", "Chai", "Taro", "Chocolate", "Café"]
         },
         "Sundae": {
-            "Sin mermelada": 70,
-            "Mermelada de Maracuyá": 70,
-            "Mermelada de Fresa": 70,
-            "Mermelada de Mango": 70,
-            "Mermelada de Moras": 70,
-            "Especial Kinder Delice": 80,
-            "Especial Crema Lotus": 80
+            precios: { "Sencillo": 50, "Especial": 60 },
+            variantes: ["Maracuyá", "Fresa", "Mango", "Moras"]
         },
-        "Cookies Sandwich": {
-            "Sencillo": 60
+        "Cookie Sandwich": {
+            precios: { "Estándar": 40 },
+            variantes: ["Chocochips", "Doble Chocolate", "Red Velvet"]
         },
-        "Conos": {
-            "Sencillo": 25,
-            "Especial": 30
-        },
-        "Frappé": {
-            "Chocolate": { "Chico": 65, "Grande": 75 },
-            "Horchata": { "Chico": 65, "Grande": 75 },
-            "Capuchino": { "Chico": 75, "Grande": 85 },
-            "Taro": { "Chico": 75, "Grande": 85 },
-            "Matcha": { "Chico": 75, "Grande": 85 }
-        },
-        "Café Caliente": {
-            "Capuchino": { "Chico": 45, "Grande": 55 },
-            "Americano": { "Chico": 35, "Grande": 40 }
-        },
-        "Bebidas": {
-            "Coca Cola Regular 355ml": 35,
-            "Coca Cola Light 355ml": 35,
-            "Agua Bonafont 600ml": 15
+        "Cono": {
+            precios: { "Sencillo": 30, "Doble": 45 },
+            variantes: ["Vainilla", "Chocolate", "Mixto"]
         }
     };
 
     let carrito = [];
-    let idVenta = parseInt(localStorage.getItem("pos_id_venta_gs")) || 1001;
-    
-    // Variables de Stock
-    let stockVortices = parseInt(localStorage.getItem("pos_stock_vortices")) || 0;
-    let stockCookies = parseInt(localStorage.getItem("pos_stock_cookies")) || 0;
+    let inventario = {
+        BaseHelado: 100,
+        Conos: 50,
+        Galletas: 40
+    };
 
+    // Cargar catálogo inicial en los selectores
     window.onload = function() {
-        const prodSelect = document.getElementById("productoSelect");
-        for (let prod in CATALOGO) {
+        const pSelect = document.getElementById("productoSelect");
+        for (let prod in catalogo) {
             let opt = document.createElement("option");
             opt.value = prod;
             opt.textContent = prod;
-            prodSelect.appendChild(opt);
+            pSelect.appendChild(opt);
         }
-
-        renderStock();
     };
-
-    function renderStock() {
-        document.getElementById("stockVorticeDisplay").textContent = `${stockVortices} porciones`;
-        document.getElementById("stockCookieDisplay").textContent = `${stockCookies} porciones`;
-    }
-
-    function actualizarStock(tipo) {
-        if (tipo === 'vortice') {
-            const val = document.getElementById("inputStockVortice").value;
-            if (val !== "") {
-                stockVortices = parseInt(val);
-                localStorage.setItem("pos_stock_vortices", stockVortices.toString());
-                document.getElementById("inputStockVortice").value = "";
-            }
-        } else if (tipo === 'cookie') {
-            const val = document.getElementById("inputStockCookie").value;
-            if (val !== "") {
-                stockCookies = parseInt(val);
-                localStorage.setItem("pos_stock_cookies", stockCookies.toString());
-                document.getElementById("inputStockCookie").value = "";
-            }
-        }
-        renderStock();
-    }
 
     function alCambiarProducto() {
         const prod = document.getElementById("productoSelect").value;
-        const varSelect = document.getElementById("varianteSelect");
-        const vorticeExtras = document.getElementById("vorticeExtras");
-        const sundaeExtras = document.getElementById("sundaeExtras");
-        const cookieExtras = document.getElementById("cookieExtras");
-        const conoExtras = document.getElementById("conoExtras");
-        const frappeExtras = document.getElementById("frappeExtras");
-        const cafeExtras = document.getElementById("cafeExtras");
-        const labelVariante = document.getElementById("labelVariante");
-       
-        varSelect.innerHTML = "";
-        vorticeExtras.style.display = "none";
-        sundaeExtras.style.display = "none";
-        cookieExtras.style.display = "none";
-        conoExtras.style.display = "none";
-        frappeExtras.style.display = "none";
-        cafeExtras.style.display = "none";
+        const vSelect = document.getElementById("varianteSelect");
+        vSelect.innerHTML = "";
 
-        if (prod === "Vórtice") {
-            vorticeExtras.style.display = "contents";
-            labelVariante.textContent = "Untado (Base)";
-        } else if (prod === "Sundae") {
-            sundaeExtras.style.display = "contents";
-            labelVariante.textContent = "Sabor / Tipo";
-        } else if (prod === "Cookies Sandwich") {
-            cookieExtras.style.display = "contents";
-            labelVariante.textContent = "Variante";
-        } else if (prod === "Conos") {
-            conoExtras.style.display = "contents";
-            labelVariante.textContent = "Tipo de Cono";
-        } else if (prod === "Frappé") {
-            frappeExtras.style.display = "contents";
-            labelVariante.textContent = "Sabor";
-        } else if (prod === "Café Caliente") {
-            cafeExtras.style.display = "contents";
-            labelVariante.textContent = "Tipo de Café";
-        } else {
-            labelVariante.textContent = "Variante / Tamaño";
-        }
+        // Ocultar todos los extras
+        document.getElementById("vorticeExtras").style.display = "none";
+        document.getElementById("sundaeExtras").style.display = "none";
+        document.getElementById("cookieExtras").style.display = "none";
+        document.getElementById("conoExtras").style.display = "none";
 
-        if (prod && CATALOGO[prod]) {
-            for (let variante in CATALOGO[prod]) {
-                let opt = document.createElement("option");
-                opt.value = variante;
-               
-                if (prod === "Frappé" || prod === "Café Caliente" || prod === "Vórtice") {
-                    opt.textContent = variante;
-                } else {
-                    opt.textContent = `${variante} ($${CATALOGO[prod][variante]})`;
-                }
-                varSelect.appendChild(opt);
-            }
-        }
+        if (!prod) return;
 
-        alCambiarVariante();
+        // Cargar variantes del producto
+        catalogo[prod].variantes.forEach(v => {
+            let opt = document.createElement("option");
+            opt.value = v;
+            opt.textContent = v;
+            vSelect.appendChild(opt);
+        });
+
+        // Mostrar sección de opciones correspondientes
+        if (prod === "Vórtice") document.getElementById("vorticeExtras").style.display = "contents";
+        if (prod === "Sundae") document.getElementById("sundaeExtras").style.display = "contents";
+        if (prod === "Cookie Sandwich") document.getElementById("cookieExtras").style.display = "contents";
+        if (prod === "Cono") document.getElementById("conoExtras").style.display = "contents";
     }
 
     function alCambiarVariante() {
-        const prod = document.getElementById("productoSelect").value;
-        const variante = document.getElementById("varianteSelect").value;
-
-        if (prod === "Sundae") {
-            const groupSundaeFruta = document.getElementById("groupSundaeFruta");
-            if (variante.includes("Especial")) {
-                groupSundaeFruta.style.display = "none";
-            } else {
-                groupSundaeFruta.style.display = "flex";
-            }
-        }
+        // Reservado para lógica adicional basada en sabor/variante
     }
 
     function agregarAlCarrito() {
-        const prod = document.getElementById("productoSelect").value;
+        const producto = document.getElementById("productoSelect").value;
         const variante = document.getElementById("varianteSelect").value;
         const cantidad = parseInt(document.getElementById("cantidadInput").value);
 
-        if (!prod || !variante || cantidad <= 0) {
-            alert("Por favor selecciona un producto válido.");
+        if (!producto || !variante || cantidad <= 0) {
+            alert("Por favor selecciona un producto, variante y cantidad válida.");
             return;
         }
 
-        let precio = 0;
-        let saborBase = variante;
-        let tamano = "N/A";
-        let fruta = "N/A";
-        let toppingExtra = "N/A";
+        let precioUnitario = 0;
+        let detalles = [];
 
-        // Vórtice
-        if (prod === "Vórtice") {
-            tamano = document.getElementById("vorticeTamanoSelect").value;
-            precio = CATALOGO[prod][variante][tamano];
-            saborBase = variante;
-            fruta = document.getElementById("vorticeFrutaSelect").value;
-            
+        if (producto === "Vórtice") {
+            const tamano = document.getElementById("vorticeTamanoSelect").value;
             const helado = document.getElementById("vorticeHeladoSelect").value;
-            const top = document.getElementById("vorticeToppingSelect").value;
-            toppingExtra = `${helado} / Top: ${top}`;
+            const fruta = document.getElementById("vorticeFrutaSelect").value;
+            const topping = document.getElementById("vorticeToppingSelect").value;
+
+            precioUnitario = catalogo["Vórtice"].precios[tamano];
+            detalles.push(`Sabor: ${variante}`, `Tamaño: ${tamano}`, helado, `Fruta: ${fruta}`, `Topping: ${topping}`);
+        } 
+        else if (producto === "Sundae") {
+            const frutaInc = document.getElementById("sundaeFrutaSelect").value;
+            const extraFruta = document.getElementById("sundaeExtraFrutaSelect").value;
+            const extraMermelada = document.getElementById("sundaeExtraMermeladaSelect").value;
+            const extraTopping = document.getElementById("sundaeToppingSelect").value;
+
+            precioUnitario = catalogo["Sundae"].precios["Sencillo"];
+            detalles.push(`Sabor: ${variante}`);
+
+            if (frutaInc !== "Sin fruta") detalles.push(`Fruta: ${frutaInc}`);
+            if (extraFruta !== "Ninguna") { precioUnitario += 10; detalles.push(`Extra Fruta: ${extraFruta}`); }
+            if (extraMermelada !== "Ninguna") { precioUnitario += 10; detalles.push(`Extra Mermelada: ${extraMermelada}`); }
+            if (extraTopping !== "Ninguno") { precioUnitario += 10; detalles.push(`Extra Topping: ${extraTopping}`); }
+        } 
+        else if (producto === "Cookie Sandwich") {
+            const topping = document.getElementById("cookieToppingSelect").value;
+            precioUnitario = catalogo["Cookie Sandwich"].precios["Estándar"];
+            detalles.push(`Galleta: ${variante}`);
+            if (topping !== "Ninguno") detalles.push(`Topping: ${topping}`);
+        } 
+        else if (producto === "Cono") {
+            const topping = document.getElementById("conoToppingSelect").value;
+            precioUnitario = catalogo["Cono"].precios["Sencillo"];
+            detalles.push(`Sabor: ${variante}`);
+            if (topping !== "Sin topping") detalles.push(`Topping: ${topping}`);
         }
-        // Sundae
-        else if (prod === "Sundae") {
-            precio = CATALOGO[prod][variante];
-            let topExtra = document.getElementById("sundaeToppingSelect").value;
-            let extraFruta = document.getElementById("sundaeExtraFrutaSelect").value;
-            let extraMermelada = document.getElementById("sundaeExtraMermeladaSelect").value;
-            
-            let extrasArray = [];
 
-            if (!variante.includes("Especial")) {
-                fruta = document.getElementById("sundaeFrutaSelect").value;
-            }
-
-            if (extraFruta !== "Ninguna") {
-                precio += 10;
-                extrasArray.push(`Fruta Extra: ${extraFruta} (+$10)`);
-                if (fruta === "N/A") fruta = `${extraFruta} (Extra)`;
-            }
-
-            if (extraMermelada !== "Ninguna") {
-                precio += 10;
-                extrasArray.push(`Mermelada Extra: ${extraMermelada} (+$10)`);
-            }
-
-            if (topExtra !== "Ninguno") {
-                precio += 10;
-                extrasArray.push(`Topping: ${topExtra} (+$10)`);
-            }
-
-            toppingExtra = extrasArray.length > 0 ? extrasArray.join(" / ") : "N/A";
-        }
-        // Cookies Sandwich
-        else if (prod === "Cookies Sandwich") {
-            precio = CATALOGO[prod][variante];
-            let topExtra = document.getElementById("cookieToppingSelect").value;
-            if (topExtra !== "Ninguno") {
-                toppingExtra = `Topping: ${topExtra}`;
-            }
-        }
-        // Conos
-        else if (prod === "Conos") {
-            precio = CATALOGO[prod][variante];
-            let topExtra = document.getElementById("conoToppingSelect").value;
-            if (topExtra !== "Ninguno") {
-                toppingExtra = `Topping: ${topExtra}`;
-            }
-        }
-        // Frappé
-        else if (prod === "Frappé") {
-            tamano = document.getElementById("frappeTamanoSelect").value;
-            const leche = document.getElementById("frappeLecheSelect").value;
-            const crema = document.getElementById("frappeCremaSelect").value;
-            const shot = document.getElementById("frappeShotSelect").value;
-
-            precio = CATALOGO[prod][variante][tamano];
-            saborBase = variante;
-
-            let detallesExtras = [];
-           
-            if (leche === "Deslactosada" || leche === "Almendras") {
-                precio += 5;
-                detallesExtras.push(`Leche ${leche} (+$5)`);
-            } else {
-                detallesExtras.push(`Leche ${leche}`);
-            }
-
-            if (shot === "Con Shot Extra") {
-                precio += 15;
-                detallesExtras.push("Shot Extra Espresso (+$15)");
-            }
-
-            detallesExtras.push(crema);
-            toppingExtra = detallesExtras.join(" / ");
-        }
-        // Café Caliente
-        else if (prod === "Café Caliente") {
-            tamano = document.getElementById("cafeTamanoSelect").value;
-            const leche = document.getElementById("cafeLecheSelect").value;
-            const shot = document.getElementById("cafeShotSelect").value;
-            const tipoAzucar = document.getElementById("cafeTipoAzucarSelect").value;
-            const sobresAzucar = parseInt(document.getElementById("cafeSobresAzucarInput").value) || 0;
-            const canela = document.getElementById("cafeCanelaSelect").value;
-
-            precio = CATALOGO[prod][variante][tamano];
-            saborBase = variante;
-
-            let detallesExtras = [];
-
-            if (leche === "Deslactosada" || leche === "Almendras") {
-                precio += 5;
-                detallesExtras.push(`Leche ${leche} (+$5)`);
-            } else {
-                detallesExtras.push(`Leche ${leche}`);
-            }
-
-            if (shot === "Con Shot Extra") {
-                precio += 15;
-                detallesExtras.push("Shot Extra Espresso (+$15)");
-            }
-
-            if (tipoAzucar !== "Sin Azúcar" && sobresAzucar > 0) {
-                detallesExtras.push(`${sobresAzucar} sobre(s) de azúcar ${tipoAzucar}`);
-            }
-
-            if (canela === "Con Canela") {
-                detallesExtras.push("Con Canela");
-            }
-
-            toppingExtra = detallesExtras.join(" / ");
-        }
-        // General (Bebidas)
-        else {
-            precio = CATALOGO[prod][variante];
-        }
+        const subtotal = precioUnitario * cantidad;
 
         carrito.push({
-            producto: prod,
-            sabor_base: saborBase,
-            tamano: tamano,
-            fruta: fruta,
-            topping_extra: toppingExtra,
-            cantidad: cantidad,
-            precio: precio,
-            subtotal: precio * cantidad
+            producto,
+            variante,
+            detalles: detalles.join(" | "),
+            cantidad,
+            precioUnitario,
+            subtotal
         });
 
-        renderCarrito();
+        renderizarCarrito();
     }
 
-    function eliminarItem(index) {
+    function eliminarDelCarrito(index) {
         carrito.splice(index, 1);
-        renderCarrito();
+        renderizarCarrito();
     }
 
-    function renderCarrito() {
-        const tbody = document.getElementById("carritoBody");
+    function renderizarCarrito() {
+        const tbody = document.getElementById("carritoTabla");
         tbody.innerHTML = "";
         let total = 0;
 
         carrito.forEach((item, index) => {
             total += item.subtotal;
-            tbody.innerHTML += `
-                <tr>
-                    <td><strong>${item.producto}</strong></td>
-                    <td>${item.sabor_base}</td>
-                    <td>${item.tamano}</td>
-                    <td>${item.fruta}</td>
-                    <td>${item.topping_extra}</td>
-                    <td class="text-center">${item.cantidad}</td>
-                    <td class="text-right">$${item.precio.toFixed(2)}</td>
-                    <td class="text-right">$${item.subtotal.toFixed(2)}</td>
-                    <td class="text-center">
-                        <button class="btn-delete" onclick="eliminarItem(${index})">❌</button>
-                    </td>
-                </tr>
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><b>${item.producto}</b></td>
+                <td><small>${item.detalles}</small></td>
+                <td class="text-center">${item.cantidad}</td>
+                <td class="text-right">$${item.precioUnitario.toFixed(2)}</td>
+                <td class="text-right">$${item.subtotal.toFixed(2)}</td>
+                <td class="text-center">
+                    <button class="btn-delete" onclick="eliminarDelCarrito(${index})">X</button>
+                </td>
             `;
+            tbody.appendChild(tr);
         });
 
-        document.getElementById("totalDisplay").textContent = `TOTAL: $${total.toFixed(2)}`;
+        document.getElementById("totalDisplay").textContent = total.toFixed(2);
     }
 
-    async function registrarEnGoogleSheets() {
+    function registrarVenta() {
         if (carrito.length === 0) {
             alert("El carrito está vacío.");
             return;
         }
 
-        // Calcular insumos requeridos en esta venta
-        let reqVortices = 0;
-        let reqCookies = 0;
-
-        carrito.forEach(item => {
-            if (item.producto === "Vórtice") {
-                reqVortices += item.cantidad;
-            } else if (item.producto === "Cookies Sandwich") {
-                reqCookies += item.cantidad;
-            }
-        });
-
-        // Validar si hay suficiente stock
-        if (reqVortices > stockVortices) {
-            alert(`⚠️ Stock insuficiente de Masa para Vórtices. Disponibles: ${stockVortices}, Requeridos: ${reqVortices}`);
-            return;
-        }
-
-        if (reqCookies > stockCookies) {
-            alert(`⚠️ Stock insuficiente de Masa para Cookies. Disponibles: ${stockCookies}, Requeridos: ${reqCookies}`);
-            return;
-        }
-
-        if (URL_GOOGLE_SHEETS.includes("AQUI_PEGA_TU_URL")) {
-            alert("Recuerda pegar tu URL de Google Apps Script.");
-            return;
-        }
-
-        const btn = document.getElementById("btnCobrar");
-        btn.disabled = true;
-        btn.textContent = "⏳ Guardando...";
-
         const metodoPago = document.getElementById("metodoPagoSelect").value;
-        const fechaHora = new Date().toLocaleString("es-MX");
+        const totalVenta = parseFloat(document.getElementById("totalDisplay").textContent);
 
-        const payload = {
-            items: carrito.map(item => ({
-                id_venta: `V-${idVenta}`,
-                fecha: fechaHora,
-                producto: item.producto,
-                sabor_base: item.sabor_base,
-                tamano: item.tamano,
-                fruta: item.fruta,
-                topping_extra: item.topping_extra,
-                cantidad: item.cantidad,
-                precio: item.precio,
-                subtotal: item.subtotal,
-                metodo_pago: metodoPago
-            }))
+        const ventaPayload = {
+            fecha: new Date().toISOString(),
+            metodoPago: metodoPago,
+            total: totalVenta,
+            items: carrito
         };
 
-        try {
-            await fetch(URL_GOOGLE_SHEETS, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            // Descontar del inventario
-            stockVortices -= reqVortices;
-            stockCookies -= reqCookies;
-
-            localStorage.setItem("pos_stock_vortices", stockVortices.toString());
-            localStorage.setItem("pos_stock_cookies", stockCookies.toString());
-            renderStock();
-
-            alert(`✅ Venta V-${idVenta} guardada en Google Sheets. Se actualizaron los inventarios.`);
-            idVenta++;
-            localStorage.setItem("pos_id_venta_gs", idVenta.toString());
+        // Enviar datos a Google Sheets mediante la Web App
+        fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(ventaPayload)
+        })
+        .then(() => {
+            alert("Venta registrada con éxito.");
             carrito = [];
-            renderCarrito();
-        } catch (error) {
-            alert("❌ Ocurrió un error al enviar la venta: " + error);
-        } finally {
-            btn.disabled = false;
-            btn.textContent = "☁️ Cobrar y Guardar en Google Sheets";
+            renderizarCarrito();
+        })
+        .catch(err => {
+            console.error("Error al registrar venta:", err);
+            alert("Ocurrió un error al conectar con Google Sheets.");
+        });
+    }
+
+    function actualizarInventario(item) {
+        const input = document.getElementById(`input${item}`);
+        const cantidadAñadir = parseInt(input.value);
+
+        if (isNaN(cantidadAñadir) || cantidadAñadir <= 0) {
+            alert("Ingresa un número válido para agregar al inventario.");
+            return;
         }
+
+        inventario[item] += cantidadAñadir;
+        document.getElementById(`inv${item}`).textContent = inventario[item];
+        input.value = "";
     }
 </script>
 
