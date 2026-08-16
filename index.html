@@ -203,7 +203,6 @@
                 <select id="vorticeFrutaSelect">
                     <option value="Fresa">Fresa</option>
                     <option value="Durazno">Durazno</option>
-                    <option value="Sin fruta">Sin fruta</option>
                 </select>
             </div>
             <div class="form-group">
@@ -447,7 +446,7 @@
 
 <script>
     // ASEGÚRATE DE REEMPLAZAR ESTA URL CON TU URL DE DESPLIEGUE PUBLICADO EN GOOGLE APPS SCRIPT
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbyr0sxaxc3LXRFHJr3Nkg8Yyp-ODhrhn_j13PUwStATWOmcyzY40AhVE0fjhhTaaVI8Lw/exec";
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbyk3E8bA25ezadGSggzVCkFwO0F6ow2cvp4S2A4uQOqnb4sls1wQHfEQLaVLaJXjsM88A/exec";
 
     const CATALOGO = {
         "Vórtice": {
@@ -503,6 +502,7 @@
             prodSelect.appendChild(opt);
         }
 
+        // Carga automáticamente el stock real desde la nube al iniciar en cualquier dispositivo
         cargarInventarioNube();
     };
 
@@ -512,8 +512,10 @@
         try {
             let res = await fetch(URL_GOOGLE_SHEETS);
             let data = await res.json();
-            stockVortices = parseFloat(data.vortices) || 0;
-            stockCookies = parseInt(data.cookies) || 0;
+            
+            // Compatible tanto con propiedades 'vortice/cookie' como 'vortices/cookies'
+            stockVortices = parseFloat(data.vortice ?? data.vortices) || 0;
+            stockCookies = parseInt(data.cookie ?? data.cookies) || 0;
             renderStock();
         } catch (e) {
             console.error("Error al obtener inventario de la nube", e);
@@ -826,7 +828,9 @@
         let payloadItems = carrito.map(item => ({
             producto: item.producto,
             variante: item.sabor_base,
-            detalles: `Tamaño: ${item.tamano} | Fruta: ${item.fruta} | Extras: ${item.topping_extra}`,
+            tamano: item.tamano,
+            fruta: item.fruta,
+            toppingExtra: item.topping_extra,
             cantidad: item.cantidad,
             precioUnitario: item.precio,
             subtotal: item.subtotal
