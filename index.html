@@ -203,7 +203,6 @@
                 <select id="vorticeFrutaSelect">
                     <option value="Fresa">Fresa</option>
                     <option value="Durazno">Durazno</option>
-                    <option value="Sin fruta">Sin fruta</option>
                 </select>
             </div>
             <div class="form-group">
@@ -218,6 +217,7 @@
                     <option value="Chispas arcoiris">Chispas arcoiris</option>
                     <option value="Bombon">Bombon</option>
                     <option value="Sin topping">Sin topping</option>
+                    <option value="Caramelo">Caramelo</option>
                 </select>
             </div>
         </div>
@@ -249,7 +249,8 @@
                     <option value="Fresa">Fresa (+ $10.00)</option>
                     <option value="Mango">Mango (+ $10.00)</option>
                     <option value="Moras">Moras (+ $10.00)</option>
-                    <option value="Nutella">Nutella (+ $10.00)</option>
+                    <option value="Caramelo">Caramelo (+ $10.00)</option>
+                    <option value="Kiwi">Kiwi (+ $10.00)</option>
                 </select>
             </div>
             <div class="form-group">
@@ -264,13 +265,14 @@
                     <option value="Oreo">Oreo (+ $10.00)</option>
                     <option value="Chispas arcoiris">Chispas arcoiris (+ $10.00)</option>
                     <option value="Bombon">Bombon (+ $10.00)</option>
+                    <option value="Caramelo">Caramelo (+ $10.00)</option>
                 </select>
             </div>
         </div>
 
         <div id="cookieExtras" class="extra-options" style="display:none;">
             <div class="form-group">
-                <label>Topping</label>
+                <label>Topping Extra</label>
                 <select id="cookieToppingSelect">
                     <option value="Ninguno">Ninguno</option>
                     <option value="Nuez">Nuez</option>
@@ -281,6 +283,7 @@
                     <option value="Oreo">Oreo</option>
                     <option value="Chispas arcoiris">Chispas arcoiris</option>
                     <option value="Bombon">Bombon</option>
+                    <option value="Caramelo">Caramelo</option>
                 </select>
             </div>
         </div>
@@ -298,6 +301,7 @@
                     <option value="Oreo">Oreo</option>
                     <option value="Chispas arcoiris">Chispas arcoiris</option>
                     <option value="Bombon">Bombon</option>
+                    <option value="Caramelo">Caramelo</option>
                 </select>
             </div>
         </div>
@@ -435,7 +439,7 @@
             </div>
 
             <div class="inventory-card">
-                <h3>🍪 Masa para Cookies</h3>
+                <h3>🍪 Galletas (Unidades)</h3>
                 <div class="inventory-count" id="stockCookieDisplay">Cargando...</div>
                 <div class="inventory-inputs">
                     <input type="number" id="inputStockCookie" placeholder="Cant." min="0" style="width: 100px;">
@@ -447,13 +451,12 @@
 </div>
 
 <script>
-    // ASEGÚRATE DE REEMPLAZAR ESTA URL CON TU URL DE DESPLIEGUE PUBLICADO EN GOOGLE APPS SCRIPT
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbyk3E8bA25ezadGSggzVCkFwO0F6ow2cvp4S2A4uQOqnb4sls1wQHfEQLaVLaJXjsM88A/exec";
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzU9RZlqGkDNzS4WtBCfVF5da3XXxmxKzdI9ZodgH-8zIdUikxBrJ7sw6TZfa-J7_kiYg/exec";
 
     const CATALOGO = {
         "Vórtice": {
             "Sin untado ": { "Normal": 110, "Baby": 80 },
-            "Untado Nutella": { "Normal": 120, "Baby": 85 },
+            "Untado Nutella": { "Normal": 110, "Baby": 80 },
             "Untado Chocolate Abuelita": { "Normal": 110, "Baby": 80 },
             "Untado Lechera": { "Normal": 110, "Baby": 80 },
             "Untado Mermelada de Fresa": { "Normal": 110, "Baby": 80 },
@@ -471,7 +474,7 @@
             "Especial Crema pistache": 80,
             "Especial Galleta": 80
         },
-        "Cookies Sandwich": { "Sencillo": 70 },
+        "Cookies Sandwich": { "Sencillo": 60 },
         "Conos": { "Sencillo": 25, "Especial": 30 },
         "Frappé": {
             "Chocolate": { "Chico": 65, "Grande": 75 },
@@ -493,7 +496,7 @@
 
     let carrito = [];
     let stockVortices = 0;
-    let stockCookies = 0;
+    let stockGalletas = 0;
 
     window.onload = function() {
         const prodSelect = document.getElementById("productoSelect");
@@ -504,7 +507,6 @@
             prodSelect.appendChild(opt);
         }
 
-        // Carga automáticamente el stock real desde la nube al iniciar en cualquier dispositivo
         cargarInventarioNube();
     };
 
@@ -515,9 +517,8 @@
             let res = await fetch(URL_GOOGLE_SHEETS);
             let data = await res.json();
             
-            // Compatible tanto con propiedades 'vortice/cookie' como 'vortices/cookies'
-            stockVortices = parseFloat(data.vortice ?? data.vortices) || 0;
-            stockCookies = parseInt(data.cookie ?? data.cookies) || 0;
+            stockVortices = parseFloat(data.vortices ?? data.vortice) || 0;
+            stockGalletas = parseInt(data.cookies ?? data.cookie) || 0;
             renderStock();
         } catch (e) {
             console.error("Error al obtener inventario de la nube", e);
@@ -528,7 +529,7 @@
 
     function renderStock() {
         document.getElementById("stockVorticeDisplay").textContent = `${stockVortices} porciones`;
-        document.getElementById("stockCookieDisplay").textContent = `${stockCookies} porciones`;
+        document.getElementById("stockCookieDisplay").textContent = `${stockGalletas} unids`;
     }
 
     async function ajustarStockNube(tipo) {
@@ -558,7 +559,7 @@
                 stockVortices = nuevoValor;
                 document.getElementById("inputStockVortice").value = "";
             } else {
-                stockCookies = nuevoValor;
+                stockGalletas = nuevoValor;
                 document.getElementById("inputStockCookie").value = "";
             }
             renderStock();
@@ -801,13 +802,15 @@
         }
 
         let reqVortices = 0;
-        let reqCookies = 0;
+        let reqGalletas = 0;
 
         carrito.forEach(item => {
             if (item.producto === "Vórtice") {
                 reqVortices += (item.tamano === "Baby") ? (item.cantidad * 0.5) : (item.cantidad * 1);
             } else if (item.producto === "Cookies Sandwich") {
-                reqCookies += item.cantidad;
+                reqGalletas += (item.cantidad * 2); // 2 galletas por cada sandwich
+            } else if (item.producto === "Sundae" && item.sabor_base === "Especial Galleta") {
+                reqGalletas += (item.cantidad * 1); // 1 galleta por sundae de galleta
             }
         });
 
@@ -816,8 +819,8 @@
             return;
         }
 
-        if (reqCookies > stockCookies) {
-            alert(`Stock insuficiente de Cookies. Requieres ${reqCookies} porciones y dispones de ${stockCookies}.`);
+        if (reqGalletas > stockGalletas) {
+            alert(`Stock insuficiente de Galletas. Requieres ${reqGalletas} unidades y dispones de ${stockGalletas}.`);
             return;
         }
 
@@ -844,7 +847,7 @@
             items: payloadItems,
             descuentoInventario: {
                 reqVortices: reqVortices,
-                reqCookies: reqCookies
+                reqGalletas: reqGalletas
             }
         };
 
@@ -859,7 +862,7 @@
 
             if (data.status === "success") {
                 stockVortices -= reqVortices;
-                stockCookies -= reqCookies;
+                stockGalletas -= reqGalletas;
                 renderStock();
 
                 alert(`✅ Venta registrada exitosamente.\n📋 Orden N°: ${data.numOrden}`);
