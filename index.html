@@ -203,6 +203,7 @@
                 <select id="vorticeFrutaSelect">
                     <option value="Fresa">Fresa</option>
                     <option value="Durazno">Durazno</option>
+                     <option value="Sin fruta">Sin fruta</option>
                 </select>
             </div>
             <div class="form-group">
@@ -474,7 +475,7 @@
             "Especial Crema pistache": 80,
             "Especial Galleta": 80
         },
-        "Cookies Sandwich": { "Sencillo": 60 },
+        "Cookies Sandwich": { "Sencillo": 70 },
         "Conos": { "Sencillo": 25, "Especial": 30 },
         "Frappé": {
             "Chocolate": { "Chico": 65, "Grande": 75 },
@@ -484,8 +485,8 @@
             "Matcha": { "Chico": 75, "Grande": 85 }
         },
         "Café Caliente": {
-            "Capuchino": { "Chico": 45, "Grande": 55 },
-            "Americano": { "Chico": 35, "Grande": 40 }
+            "Capuchino": { "Chico": 55, "Grande": 65 },
+            "Americano": { "Chico": 40, "Grande": 45 }
         },
         "Bebidas": {
             "Coca Cola Regular 355ml": 35,
@@ -563,7 +564,7 @@
                 document.getElementById("inputStockCookie").value = "";
             }
             renderStock();
-            alert("✅ Inventario actualizado en la nube.");
+            alert("✅ Inventario actualizado.");
         } catch (e) {
             alert("❌ Error actualizando inventario: " + e.message);
         }
