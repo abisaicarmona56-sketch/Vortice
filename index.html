@@ -178,6 +178,22 @@
             </select>
         </div>
 
+        <div id="vorticeTamanoGroup" class="form-group extra-options" style="display:none;">
+            <label>Tamaño</label>
+            <select id="vorticeTamanoSelect">
+                <option value="Normal">Normal</option>
+                <option value="Baby">Baby</option>
+            </select>
+        </div>
+
+        <div id="frappeTamanoGroup" class="form-group extra-options" style="display:none;">
+            <label>Tamaño</label>
+            <select id="frappeTamanoSelect">
+                <option value="Chico">Chico</option>
+                <option value="Grande">Grande</option>
+            </select>
+        </div>
+
         <div class="form-group" id="groupVariante">
             <label id="labelVariante">Sabor / Tipo</label>
             <select id="varianteSelect" onchange="alCambiarVariante()"></select>
@@ -185,10 +201,11 @@
 
         <div id="vorticeExtras" class="extra-options" style="display:none;">
             <div class="form-group">
-                <label>Tamaño</label>
-                <select id="vorticeTamanoSelect">
-                    <option value="Normal">Normal</option>
-                    <option value="Baby">Baby</option>
+                <label>Fruta</label>
+                <select id="vorticeFrutaSelect">
+                    <option value="Fresa">Fresa</option>
+                    <option value="Durazno">Durazno</option>
+                    <option value="Sin fruta">Sin fruta</option>
                 </select>
             </div>
             <div class="form-group">
@@ -196,14 +213,6 @@
                 <select id="vorticeHeladoSelect">
                     <option value="Con Helado">Con Helado</option>
                     <option value="Sin Helado">Sin Helado</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Fruta</label>
-                <select id="vorticeFrutaSelect">
-                    <option value="Fresa">Fresa</option>
-                    <option value="Durazno">Durazno</option>
-                     <option value="Sin fruta">Sin fruta</option>
                 </select>
             </div>
             <div class="form-group">
@@ -219,6 +228,51 @@
                     <option value="Bombon">Bombon</option>
                     <option value="Sin topping">Sin topping</option>
                     <option value="Caramelo">Caramelo</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="croissantExtras" class="extra-options" style="display:none;">
+            <div class="form-group">
+                <label>Helado</label>
+                <select id="croissantHeladoSelect">
+                    <option value="Con Helado">Con Helado</option>
+                    <option value="Sin Helado">Sin Helado</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Fruta</label>
+                <select id="croissantFrutaSelect">
+                    <option value="Fresa">Fresa</option>
+                    <option value="Durazno">Durazno</option>
+                    <option value="Sin fruta">Sin fruta</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Topping Superior</label>
+                <select id="croissantToppingSelect">
+                    <option value="Nuez">Nuez</option>
+                    <option value="Almendra">Almendra</option>
+                    <option value="Chispas de Yogurth">Chispas de Yogurth</option>
+                    <option value="Chispas de Chocolate">Chispas de Chocolate</option>
+                    <option value="Galleta Lotus">Galleta Lotus</option>
+                    <option value="Oreo">Oreo</option>
+                    <option value="Chispas arcoiris">Chispas arcoiris</option>
+                    <option value="Bombon">Bombon</option>
+                    <option value="Sin topping">Sin topping</option>
+                    <option value="Caramelo">Caramelo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Topping Untado</label>
+                <select id="croissantToppingUntadoSelect">
+                    <option value="Sin untado extra">Sin untado extra</option>
+                    <option value="Untado Nutella">Untado Nutella</option>
+                    <option value="Untado Chocolate Abuelita">Untado Chocolate Abuelita</option>
+                    <option value="Untado Lechera">Untado Lechera</option>
+                    <option value="Untado Mermelada de Fresa">Untado Mermelada de Fresa</option>
+                    <option value="Untado Lotus">Untado Lotus</option>
+                    <option value="Untado Crema de Pistache">Untado Crema de Pistache</option>
                 </select>
             </div>
         </div>
@@ -308,13 +362,6 @@
         </div>
 
         <div id="frappeExtras" class="extra-options" style="display:none;">
-            <div class="form-group">
-                <label>Tamaño</label>
-                <select id="frappeTamanoSelect">
-                    <option value="Chico">Chico</option>
-                    <option value="Grande">Grande</option>
-                </select>
-            </div>
             <div class="form-group">
                 <label>Tipo de Leche</label>
                 <select id="frappeLecheSelect">
@@ -452,7 +499,7 @@
 </div>
 
 <script>
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzU9RZlqGkDNzS4WtBCfVF5da3XXxmxKzdI9ZodgH-8zIdUikxBrJ7sw6TZfa-J7_kiYg/exec";
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbz3oiv0kothHXSK8fpYEFPA06oZiFI0hdOVtseJGpE8U8VjJ7z7_oHqSkH2KcBZmsUY7g/exec";
 
     const CATALOGO = {
         "Vórtice": {
@@ -463,6 +510,15 @@
             "Untado Mermelada de Fresa": { "Normal": 110, "Baby": 80 },
             "Untado Lotus": { "Normal": 120, "Baby": 85 },
             "Untado Crema de Pistache": { "Normal": 120, "Baby": 85 }
+        },
+        "Croissant": {
+            "Sin untado ": 95,
+            "Untado Nutella": 95,
+            "Untado Chocolate Abuelita": 95,
+            "Untado Lechera": 95,
+            "Untado Mermelada de Fresa": 95,
+            "Untado Lotus": 95,
+            "Untado Crema de Pistache": 95
         },
         "Sundae": {
             "Sin mermelada": 70,
@@ -478,11 +534,16 @@
         "Cookies Sandwich": { "Sencillo": 70 },
         "Conos": { "Sencillo": 25, "Especial": 30 },
         "Frappé": {
-            "Chocolate": { "Chico": 65, "Grande": 75 },
             "Horchata": { "Chico": 65, "Grande": 75 },
+            "Chocolate": { "Chico": 65, "Grande": 75 },
             "Capuchino": { "Chico": 75, "Grande": 85 },
+            "Cookies & Cream": { "Chico": 75, "Grande": 85 },
+            "Crema Francesa": { "Chico": 75, "Grande": 85 },
             "Taro": { "Chico": 75, "Grande": 85 },
-            "Matcha": { "Chico": 75, "Grande": 85 }
+            "Matcha": { "Chico": 75, "Grande": 85 },
+            "Pistache": { "Chico": 75, "Grande": 85 },
+            "Maracuyá": { "Chico": 75, "Grande": 85 },
+            "Piña colada": { "Chico": 75, "Grande": 85 }
         },
         "Café Caliente": {
             "Capuchino": { "Chico": 55, "Grande": 65 },
@@ -574,6 +635,9 @@
         const prod = document.getElementById("productoSelect").value;
         const varSelect = document.getElementById("varianteSelect");
         const vorticeExtras = document.getElementById("vorticeExtras");
+        const croissantExtras = document.getElementById("croissantExtras");
+        const vorticeTamanoGroup = document.getElementById("vorticeTamanoGroup");
+        const frappeTamanoGroup = document.getElementById("frappeTamanoGroup");
         const sundaeExtras = document.getElementById("sundaeExtras");
         const cookieExtras = document.getElementById("cookieExtras");
         const conoExtras = document.getElementById("conoExtras");
@@ -583,6 +647,9 @@
         
         varSelect.innerHTML = "";
         vorticeExtras.style.display = "none";
+        croissantExtras.style.display = "none";
+        vorticeTamanoGroup.style.display = "none";
+        frappeTamanoGroup.style.display = "none";
         sundaeExtras.style.display = "none";
         cookieExtras.style.display = "none";
         conoExtras.style.display = "none";
@@ -590,7 +657,11 @@
         cafeExtras.style.display = "none";
 
         if (prod === "Vórtice") {
+            vorticeTamanoGroup.style.display = "flex";
             vorticeExtras.style.display = "contents";
+            labelVariante.textContent = "Untado (Base)";
+        } else if (prod === "Croissant") {
+            croissantExtras.style.display = "contents";
             labelVariante.textContent = "Untado (Base)";
         } else if (prod === "Sundae") {
             sundaeExtras.style.display = "contents";
@@ -602,6 +673,7 @@
             conoExtras.style.display = "contents";
             labelVariante.textContent = "Tipo de Cono";
         } else if (prod === "Frappé") {
+            frappeTamanoGroup.style.display = "flex";
             frappeExtras.style.display = "contents";
             labelVariante.textContent = "Sabor";
         } else if (prod === "Café Caliente") {
@@ -666,6 +738,14 @@
             const helado = document.getElementById("vorticeHeladoSelect").value;
             const top = document.getElementById("vorticeToppingSelect").value;
             toppingExtra = `${helado} / Top: ${top}`;
+        } else if (prod === "Croissant") {
+            precio = CATALOGO[prod][variante];
+            saborBase = variante;
+            fruta = document.getElementById("croissantFrutaSelect").value;
+            const helado = document.getElementById("croissantHeladoSelect").value;
+            const top = document.getElementById("croissantToppingSelect").value;
+            const topUntado = document.getElementById("croissantToppingUntadoSelect").value;
+            toppingExtra = `${helado} / Top: ${top} / Top Untado: ${topUntado}`;
         } else if (prod === "Sundae") {
             precio = CATALOGO[prod][variante];
             let topExtra = document.getElementById("sundaeToppingSelect").value;
@@ -869,6 +949,10 @@
                 alert(`✅ Venta registrada exitosamente.\n📋 Orden N°: ${data.numOrden}`);
                 carrito = [];
                 renderCarrito();
+
+                // Regresa el formulario a la opción de selección inicial
+                document.getElementById("productoSelect").value = "";
+                alCambiarProducto();
             } else {
                 alert("❌ Error en el servidor: " + data.message);
             }
