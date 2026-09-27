@@ -210,7 +210,7 @@
 <div class="container">
     <h1>Vórtice - Punto de Venta</h1>
 
-    <!-- Barra de Corte y Totales del Día con botón Tarjeta -->
+    <!-- Barra de Corte y Totales del Día -->
     <div class="corte-bar">
         <span class="corte-titulo">📊 Total de Hoy:</span>
         <button class="btn-corte" onclick="consultarCorte('efectivo')">💵 Efectivo</button>
@@ -262,8 +262,7 @@
             <div class="form-group">
                 <label>Helado Suave</label>
                 <select id="vorticeHeladoSelect">
-                    <option value="Con Helado">Con Helado Suave</option>}
-                    <option value="Crema batida">Crema batida</option>
+                    <option value="Con Helado">Con Helado Suave</option>
                     <option value="Sin Helado">Sin Helado</option>
                 </select>
             </div>
@@ -329,7 +328,6 @@
             <div class="form-group" id="groupSundaeMermelada">
                 <label>Mermelada Incluida</label>
                 <select id="sundaeMermeladaSelect">
-                    <option value="Sin mermelada">Sin mermelada</option>
                     <option value="Fresa">Fresa</option>
                     <option value="Kiwi">Kiwi</option>
                     <option value="Maracuyá">Maracuyá</option>
@@ -524,7 +522,8 @@
 </div>
 
 <script>
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbyQvJ4Ud0qFZjZjjRsMxUkCA5Dm9OfnN48AmNoPtsT7_6l6FFqXfXmV9GrFevdqKrEAxw/exec";
+    // Pega aquí la URL de tu última implementación de Google Apps Script
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbxzfmxfWf2xtHzKnSwcGVUEOhyvSlvCzWrXA0H7M_UmqpsYGCzUn9wNw8sFgjkQfRyLdQ/exec";
 
     const CATALOGO = {
         "Vórtice": {
@@ -544,12 +543,12 @@
             "Lotus": 95
         },
         "Pan de Muerto": {
-            "Lechera": 105,
-            "Mermelada de fresa": 105,
-            "Chocolate abuelita": 105,
-            "Nutella": 105,
-            "Pistache": 105,
-            "Lotus": 105
+            "Lechera": 95,
+            "Mermelada de fresa": 95,
+            "Chocolate abuelita": 95,
+            "Nutella": 95,
+            "Pistache": 95,
+            "Lotus": 95
         },
         "Sundae": {
             "Clásico": 70,
@@ -573,7 +572,6 @@
             "Piña colada": { "Chico": 75, "Grande": 85 }
         },
         "Café": {
-             "Pumpkin species latte": { "Chico": 85, "Grande": 95 }
             "Capuchino": { "Chico": 50, "Grande": 60 },
             "Late": { "Chico": 50, "Grande": 60 },
             "Americano": { "Chico": 40, "Grande": 45 }
@@ -1070,7 +1068,7 @@
             let data = await res.json();
 
             if (data.status === "success") {
-                alert(`✅ Venta registrada exitosamente.\n📋 Orden N°: ${data.numOrden}\n📅 Fecha: ${payload.fecha}`);
+                alert(`✅ Venta registrada exitosamente.\n📋 Venta N°: ${data.numOrden}`);
                 carrito = [];
                 renderCarrito();
                 document.getElementById("productoSelect").value = "";
