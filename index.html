@@ -392,6 +392,13 @@
                 </select>
             </div>
             <div class="form-group">
+                <label>Helado Suave Extra (+ $15)</label>
+                <select id="frappeHeladoSelect">
+                    <option value="Sin Helado">Sin Helado (+ $0)</option>
+                    <option value="Con Helado Suave">Con Helado Suave (+ $15.00)</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label>Shot Extra Espresso</label>
                 <select id="frappeShotSelect">
                     <option value="Sin Shot Extra">No</option>
@@ -518,7 +525,7 @@
 </div>
 
 <script>
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbxzfmxfWf2xtHzKnSwcGVUEOhyvSlvCzWrXA0H7M_UmqpsYGCzUn9wNw8sFgjkQfRyLdQ/exec";
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbw6syuae7Ty4bMq_RhHFY1WJClMHuB5HLZQdxheKquXotR9DJnK5TJ0uXXzXiAofexnkw/exec";
 
     const CATALOGO = {
         "Vórtice": {
@@ -570,7 +577,7 @@
             "Capuchino": { "Chico": 50, "Grande": 60 },
             "Late": { "Chico": 50, "Grande": 60 },
             "Americano": { "Chico": 40, "Grande": 45 },
-            "Pumpkin Spice Latte": 60
+            "Pumpkin Spice Latte": { "Chico": 85, "Grande": 95 }
         },
         "Bebidas": {
             "Coca - Cola Regular 355 ml": 35,
@@ -800,7 +807,6 @@
             const groupSundaeMermelada = document.getElementById("groupSundaeMermelada");
             const groupSundaeToppingExtra = document.getElementById("groupSundaeToppingExtra");
 
-            // El topping extra siempre estará disponible para personalizar en Sundae
             groupSundaeToppingExtra.style.display = "flex";
 
             if (variante.startsWith("Especial")) {
@@ -902,6 +908,7 @@
         } else if (prod === "Frappé") {
             tamano = document.getElementById("frappeTamanoSelect").value;
             const leche = document.getElementById("frappeLecheSelect").value;
+            const heladoExtra = document.getElementById("frappeHeladoSelect").value;
             const shot = document.getElementById("frappeShotSelect").value;
             precio = CATALOGO[prod][variante][tamano];
             saborBase = variante;
@@ -913,6 +920,12 @@
             } else {
                 detallesExtras.push(`Leche ${leche}`);
             }
+
+            if (heladoExtra === "Con Helado Suave") {
+                precio += 15;
+                detallesExtras.push("Helado Suave Extra (+$15)");
+            }
+
             if (shot === "Con Shot Extra") {
                 precio += 15;
                 detallesExtras.push("Shot Extra Espresso (+$15)");
