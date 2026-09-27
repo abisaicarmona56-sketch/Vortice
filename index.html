@@ -43,7 +43,7 @@
         .corte-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
             background: var(--color1);
             border: 1px solid var(--color2);
@@ -210,11 +210,12 @@
 <div class="container">
     <h1>Vórtice - Punto de Venta</h1>
 
-    <!-- Barra de Corte y Totales del Día -->
+    <!-- Barra de Corte y Totales del Día con botón Tarjeta -->
     <div class="corte-bar">
         <span class="corte-titulo">📊 Total de Hoy:</span>
         <button class="btn-corte" onclick="consultarCorte('efectivo')">💵 Efectivo</button>
         <button class="btn-corte" onclick="consultarCorte('transferencia')">📱 Transferencia</button>
+        <button class="btn-corte" onclick="consultarCorte('tarjeta')">💳 Tarjeta</button>
         <button class="btn-corte" onclick="consultarCorte('todos')">🧾 Corte Completo</button>
         <span class="display-corte" id="resultadoCorte"></span>
     </div>
@@ -521,7 +522,7 @@
 </div>
 
 <script>
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbwtaAcE-6kw9EzrlDXDvXTWkvagSmMNetbajjgrxBoVTLR8_P5A_VE3OJEB5y0nZ7dxzQ/exec";
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbz6vysFI5ju8NALundO22Jfi-6roh57MB74SMo5A7uspcTkhiN5z6rWZEy-QnD88UpRWw/exec";
 
     const CATALOGO = {
         "Vórtice": {
@@ -653,8 +654,10 @@
                 display.textContent = `💵 Efectivo Hoy: $${data.efectivo.toFixed(2)}`;
             } else if (tipo === "transferencia") {
                 display.textContent = `📱 Transferencia Hoy: $${data.transferencia.toFixed(2)}`;
+            } else if (tipo === "tarjeta") {
+                display.textContent = `💳 Tarjeta Hoy: $${data.tarjeta.toFixed(2)}`;
             } else if (tipo === "todos") {
-                display.textContent = `Total: $${data.totalGeneral.toFixed(2)} (Efec: $${data.efectivo.toFixed(2)} | Transf: $${data.transferencia.toFixed(2)})`;
+                display.textContent = `Total Hoy: $${data.totalGeneral.toFixed(2)}`;
                 alert(
                     `📋 CORTE DE HOY:\n\n` +
                     `💵 Efectivo: $${data.efectivo.toFixed(2)}\n` +
