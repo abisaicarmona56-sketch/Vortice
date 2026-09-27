@@ -329,7 +329,7 @@
         <!-- Extras Sundae -->
         <div id="sundaeExtras" class="extra-options" style="display:none;">
             <div class="form-group" id="groupSundaeMermelada">
-                <label>Mermelada Incluida</label>
+                <label>Mermelada / Untado Incluido</label>
                 <select id="sundaeMermeladaSelect">
                     <option value="Fresa">Fresa</option>
                     <option value="Kiwi">Kiwi</option>
@@ -361,20 +361,7 @@
             </div>
             <div class="form-group" id="groupSundaeToppingExtra">
                 <label>Topping Extra (+$10)</label>
-                <select id="cookieExtraToppingSelect">
-                    <option value="Ninguno">Ninguno</option>
-                    <option value="Chispas de chocolate">Chispas de chocolate (+ $10.00)</option>
-                    <option value="Chispas de colores">Chispas de colores (+ $10.00)</option>
-                    <option value="Nuez trozada">Nuez trozada (+ $10.00)</option>
-                    <option value="Almendra fileteada">Almendra fileteada (+ $10.00)</option>
-                </select>
-                <select id="sundaeToppingSelect">
-                    <option value="Ninguno">Ninguno</option>
-                    <option value="Chispas de chocolate">Chispas de chocolate (+ $10.00)</option>
-                    <option value="Chispas de colores">Chispas de colores (+ $10.00)</option>
-                    <option value="Nuez trozada">Nuez trozada (+ $10.00)</option>
-                    <option value="Almendra fileteada">Almendra fileteada (+ $10.00)</option>
-                </select>
+                <select id="sundaeToppingSelect" class="select-topping-general"></select>
             </div>
         </div>
 
@@ -391,13 +378,7 @@
             </div>
             <div class="form-group">
                 <label>Topping Extra (+$10)</label>
-                <select id="cookieExtraToppingSelect">
-                    <option value="Ninguno">Ninguno</option>
-                    <option value="Chispas de chocolate">Chispas de chocolate (+ $10.00)</option>
-                    <option value="Chispas de colores">Chispas de colores (+ $10.00)</option>
-                    <option value="Nuez trozada">Nuez trozada (+ $10.00)</option>
-                    <option value="Almendra fileteada">Almendra fileteada (+ $10.00)</option>
-                </select>
+                <select id="cookieExtraToppingSelect" class="select-topping-general"></select>
             </div>
         </div>
 
@@ -537,7 +518,6 @@
 </div>
 
 <script>
-    // Pega aquí la URL de tu última implementación de Google Apps Script
     const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbxzfmxfWf2xtHzKnSwcGVUEOhyvSlvCzWrXA0H7M_UmqpsYGCzUn9wNw8sFgjkQfRyLdQ/exec";
 
     const CATALOGO = {
@@ -594,7 +574,8 @@
         "Bebidas": {
             "Coca - Cola Regular 355 ml": 35,
             "Coca - Cola Light 355 ml": 35,
-            "Agua natural 600 ml": 15
+            "Agua natural 600 ml": 15,
+            "Pumpkin Spice Latte": 60
         }
     };
 
@@ -819,14 +800,15 @@
             const groupSundaeMermelada = document.getElementById("groupSundaeMermelada");
             const groupSundaeToppingExtra = document.getElementById("groupSundaeToppingExtra");
 
+            // El topping extra siempre estará disponible para personalizar en Sundae
+            groupSundaeToppingExtra.style.display = "flex";
+
             if (variante.startsWith("Especial")) {
                 groupSundaeFruta.style.display = "none";
                 groupSundaeMermelada.style.display = "none";
-                groupSundaeToppingExtra.style.display = "flex";
             } else {
                 groupSundaeFruta.style.display = "flex";
                 groupSundaeMermelada.style.display = "flex";
-                groupSundaeToppingExtra.style.display = "none";
             }
         }
 
@@ -894,14 +876,14 @@
             if (variante === "Clásico") {
                 let mermelada = document.getElementById("sundaeMermeladaSelect").value;
                 fruta = document.getElementById("sundaeFrutaSelect").value;
-                extrasArray.push(`Mermelada: ${mermelada}`);
+                extrasArray.push(`Mermelada/Untado: ${mermelada}`);
             }
 
             if (extraFruta !== "Ninguna") {
                 precio += 10;
                 extrasArray.push(`Fruta Extra: ${extraFruta} (+$10)`);
             }
-            if (variante.startsWith("Especial") && topExtra !== "Ninguno") {
+            if (topExtra !== "Ninguno") {
                 precio += 10;
                 extrasArray.push(`Topping Extra: ${topExtra} (+$10)`);
             }
