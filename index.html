@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Punto de Venta - Vórtice</title>
+    <title>Punto de Venta & Comandas KDS - Vórtice</title>
+
+    <!-- ============================================================== -->
+    <!-- 1. ESTILOS VISUALES (CSS)                                      -->
+    <!-- Aquí puedes ajustar colores, tamaños de botones y tipografías. -->
+    <!-- ============================================================== -->
     <style>
         :root {
-            --color1: #EDE4D3;
-            --color2: #C9B79C;
-            --color3: #9C7A54;
-            --color4: #6B4F3A;
-            --color5: #3E2E22;
-            --danger: #b73a3a;
+            /* Paleta de colores temáticos Vórtice */
+            --color1: #EDE4D3; /* Fondo crema claro */
+            --color2: #C9B79C; /* Borde y beige intermedio */
+            --color3: #9C7A54; /* Café medio */
+            --color4: #6B4F3A; /* Café oscuro / Botones principales */
+            --color5: #3E2E22; /* Café muy oscuro / Textos */
+            --danger: #b73a3a; /* Rojo para cancelar o borrar */
+            --success: #2e7d32; /* Verde para confirmaciones */
         }
 
         body {
@@ -23,7 +30,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             background: #ffffff;
             padding: 25px;
@@ -38,8 +45,9 @@
             border-bottom: 2px solid var(--color3); 
             padding-bottom: 10px; 
         }
-        h2 { font-size: 1.2rem; margin-top: 25px; margin-bottom: 15px; }
+        h2 { font-size: 1.25rem; margin-top: 25px; margin-bottom: 15px; }
 
+        /* Barra de corte de caja de hoy */
         .corte-bar {
             display: flex;
             flex-wrap: wrap;
@@ -52,11 +60,7 @@
             margin-bottom: 20px;
         }
 
-        .corte-titulo {
-            font-weight: bold;
-            font-size: 0.95rem;
-            color: var(--color5);
-        }
+        .corte-titulo { font-weight: bold; font-size: 0.95rem; color: var(--color5); }
 
         .btn-corte {
             background-color: var(--color4);
@@ -69,9 +73,7 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
-        .btn-corte:hover {
-            background-color: var(--color5);
-        }
+        .btn-corte:hover { background-color: var(--color5); }
 
         .display-corte {
             font-size: 1.05rem;
@@ -80,22 +82,60 @@
             margin-left: auto;
         }
 
-        .grid-form {
+        /* Botones superiores de selección rápida de productos */
+        .catalogo-nav {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-producto-tab {
             background: var(--color1);
-            padding: 15px;
+            color: var(--color5);
+            border: 2px solid var(--color2);
+            padding: 12px 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-producto-tab:hover {
+            border-color: var(--color4);
+            background: #fdfaf5;
+        }
+
+        .btn-producto-tab.active {
+            background: var(--color4);
+            color: #ffffff;
+            border-color: var(--color5);
+            box-shadow: 0 3px 8px rgba(62, 46, 34, 0.25);
+        }
+
+        /* Panel contenedor de personalización */
+        .panel-personalizacion {
+            background: var(--color1);
+            padding: 20px;
             border-radius: 8px;
             border: 1px solid var(--color2);
             margin-bottom: 20px;
+        }
+
+        .grid-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 15px;
+            align-items: flex-end;
         }
 
         .form-group { display: flex; flex-direction: column; }
         label { font-weight: bold; font-size: 0.85em; margin-bottom: 5px; color: var(--color5); }
         
         select, input, button { 
-            padding: 8px; 
+            padding: 9px; 
             border: 1px solid var(--color3); 
             border-radius: 6px; 
             font-size: 0.95rem; 
@@ -115,8 +155,8 @@
             background-color: var(--color4); 
             color: var(--color1); 
             border: none; 
-            align-self: flex-end; 
             padding: 10px; 
+            font-size: 1rem;
         }
         .btn-add:hover { background-color: var(--color5); }
         .btn-delete { background-color: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; }
@@ -131,6 +171,7 @@
         }
         .btn-pay:hover { background-color: var(--color4); }
 
+        /* Tabla del carrito actual */
         table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.9rem; }
         th, td { padding: 10px; border-bottom: 1px solid var(--color2); text-align: left; }
         th { background-color: var(--color4); color: var(--color1); }
@@ -151,56 +192,156 @@
         .total-display { font-size: 1.5rem; font-weight: bold; color: var(--color5); }
         .extra-options { display: contents; }
 
-        .inventory-section {
-            background: var(--color1);
-            border: 1px solid var(--color2);
-            border-radius: 8px;
+        /* Estilos de la Pantalla de Comandas KDS (Cocina / Barra) */
+        .kds-container {
+            background: #2b221b;
+            color: #f7f3ec;
+            border-radius: 10px;
             padding: 20px;
-            margin-top: 20px;
+            margin-top: 30px;
+            border: 2px solid var(--color4);
         }
 
-        .inventory-header {
+        .kds-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--color4);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .kds-header h2 { margin: 0; color: #ffffff; border: none; padding: 0; }
+
+        .kds-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .kds-col-title {
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .inventory-card {
-            background: #ffffff;
-            border: 1px solid var(--color3);
-            border-radius: 8px;
-            padding: 15px;
+        .kds-grid {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 2px 5px rgba(62, 46, 34, 0.08);
+            gap: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 5px;
         }
 
-        .inventory-card h3 { margin: 0; font-size: 0.95rem; color: var(--color5); }
+        .kds-card {
+            background: #3b2f25;
+            border: 2px solid #5a4434;
+            border-radius: 8px;
+            padding: 14px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
 
-        .inventory-count {
-            font-size: 1.6rem;
+        /* Si el pedido supera los 7 minutos, el borde se vuelve rojo */
+        .kds-card.delayed {
+            border-color: #d32f2f;
+            background: #442424;
+        }
+
+        .kds-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #634f3f;
+            padding-bottom: 6px;
+        }
+
+        .kds-order-num { font-size: 1.25rem; font-weight: 900; color: #ffca28; }
+        .kds-timer { font-size: 0.85rem; background: rgba(0,0,0,0.4); padding: 3px 8px; border-radius: 4px; color: #fff; }
+
+        .kds-item {
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .kds-item:last-child { border-bottom: none; margin-bottom: 0; }
+
+        .kds-item-name {
+            font-size: 1.05rem;
             font-weight: bold;
-            color: var(--color4);
-            text-align: center;
-            margin: 5px 0;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .inventory-inputs { display: flex; gap: 8px; }
+        .kds-badge {
+            display: inline-block;
+            background: #241c16;
+            color: #ffd54f;
+            font-size: 0.78rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 4px;
+            margin-right: 4px;
+            border: 1px solid rgba(255,213,79,0.3);
+        }
+        /* Etiquetas críticas resaltadas en rojo (sin helado, deslactosada, etc.) */
+        .kds-badge.alert {
+            background: #b71c1c;
+            color: #ffffff;
+            border-color: #ef5350;
+        }
 
-        .btn-update {
-            background-color: var(--color4);
-            color: var(--color1);
+        .kds-card-actions { margin-top: 12px; display: flex; gap: 8px; }
+
+        .btn-kds-ready {
+            flex: 1;
+            background: #2e7d32;
+            color: white;
             border: none;
             padding: 8px;
+            border-radius: 5px;
             font-size: 0.85rem;
+            cursor: pointer;
         }
+        .btn-kds-ready:hover { background: #1b5e20; }
+
+        .btn-kds-deliver {
+            flex: 1;
+            background: #1565c0;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .btn-kds-deliver:hover { background: #0d47a1; }
+
+        /* Sección de Mini Inventario */
+        .inventory-section {
+            background: var(--color1);
+            border: 1px solid var(--color2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .inventory-header { display: flex; justify-content: space-between; align-items: center; }
+        .inventory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .inventory-card { background: #ffffff; border: 1px solid var(--color3); border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .inventory-card h3 { margin: 0; font-size: 0.95rem; color: var(--color5); }
+        .inventory-count { font-size: 1.6rem; font-weight: bold; color: var(--color4); text-align: center; }
+        .inventory-inputs { display: flex; gap: 8px; }
+        .btn-update { background-color: var(--color4); color: var(--color1); border: none; padding: 8px; font-size: 0.85rem; }
         .btn-update:hover { background-color: var(--color5); }
         .btn-sync { background-color: var(--color3); color: white; border: none; padding: 6px 12px; border-radius: 4px; }
     </style>
@@ -208,261 +349,296 @@
 <body>
 
 <div class="container">
-    <h1>Vórtice - Punto de Venta</h1>
+    <h1>Vórtice - Punto de Venta & Comandas</h1>
 
-    <!-- Barra de Corte y Totales del Día -->
+    <!-- ============================================================== -->
+    <!-- 2. BARRA DE CORTE DE CAJA                                      -->
+    <!-- Muestra el resumen de ventas del día por método de pago.       -->
+    <!-- ============================================================== -->
     <div class="corte-bar">
         <span class="corte-titulo">📊 Total de Hoy:</span>
-        <button class="btn-corte" onclick="consultarCorte('efectivo')">💵 Efectivo</button>
-        <button class="btn-corte" onclick="consultarCorte('transferencia')">📱 Transferencia</button>
-        <button class="btn-corte" onclick="consultarCorte('tarjeta')">💳 Tarjeta</button>
+        <button class="btn-corte" onclick="consultarCorte('efectivo')"> Efectivo</button>
+        <button class="btn-corte" onclick="consultarCorte('transferencia')"> Transferencia</button>
+        <button class="btn-corte" onclick="consultarCorte('tarjeta')"> Tarjeta</button>
         <button class="btn-corte" onclick="consultarCorte('todos')">🧾 Corte Completo</button>
         <span class="display-corte" id="resultadoCorte"></span>
     </div>
 
-    <div class="grid-form">
-        <div class="form-group">
-            <label>Producto / Categoría</label>
-            <select id="productoSelect" onchange="alCambiarProducto()">
-                <option value="">Selecciona...</option>
-            </select>
-        </div>
+    <!-- ============================================================== -->
+    <!-- 3. CATÁLOGO TÁCTIL SUPERIOR                                    -->
+    <!-- Los botones se generan automáticamente con JavaScript.         -->
+    <!-- ============================================================== -->
+    <h2>1. Selecciona Producto</h2>
+    <div class="catalogo-nav" id="catalogoNav"></div>
 
-        <div id="vorticeTamanoGroup" class="form-group extra-options" style="display:none;">
-            <label>Tamaño</label>
-            <select id="vorticeTamanoSelect">
-                <option value="Original">Original</option>
-                <option value="Baby">Baby</option>
-            </select>
-        </div>
-
-        <div id="frappeTamanoGroup" class="form-group extra-options" style="display:none;">
-            <label>Tamaño</label>
-            <select id="frappeTamanoSelect">
-                <option value="Chico">Chico</option>
-                <option value="Grande">Grande</option>
-            </select>
-        </div>
-
-        <div class="form-group" id="groupVariante">
-            <label id="labelVariante">Sabor / Tipo</label>
-            <select id="varianteSelect" onchange="alCambiarVariante()"></select>
-        </div>
-
-        <!-- Extras Vórtice -->
-        <div id="vorticeExtras" class="extra-options" style="display:none;">
-            <div class="form-group">
-                <label>Fruta Incluida</label>
-                <select id="vorticeFrutaSelect">
-                    <option value="Fresa">Fresa</option>
-                    <option value="Durazno en almíbar">Durazno en almíbar</option>
-                    <option value="Sin fruta">Sin fruta</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Helado Suave</label>
-                <select id="vorticeHeladoSelect">
-                    <option value="Con Helado">Con Helado Suave</option>
-                    <option value="Crema batida">Crema batida</option>
-                    <option value="Sin Helado">Sin Helado</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Topping Superior Incluido</label>
-                <select id="vorticeToppingSelect">
-                    <option value="Chispas de chocolate">Chispas de chocolate</option>
-                    <option value="Chispas de colores">Chispas de colores</option>
-                    <option value="Chispas de yogurt">Chispas de yogurt</option>
-                    <option value="Nuez trozada">Nuez trozada</option>
-                    <option value="Almendra fileteada">Almendra fileteada</option>
-                    <option value="Galleta Lotus">Galleta Lotus</option>
-                    <option value="Galleta Oreo">Galleta Oreo</option>
-                    <option value="Bomboncitos de chocolate">Bomboncitos de chocolate</option>
-                    <option value="Sin topping">Sin topping</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Topping Extra (+$10)</label>
-                <select id="vorticeExtraToppingSelect" class="select-topping-general"></select>
-            </div>
-        </div>
-
-        <!-- Extras Croissant y Pan de Muerto -->
-        <div id="croissantPanExtras" class="extra-options" style="display:none;">
-            <div class="form-group">
-                <label>Helado Suave</label>
-                <select id="croissantHeladoSelect">
-                    <option value="Con Helado">Con Helado Suave</option>
-                    <option value="Crema batida">Crema batida</option>
-                    <option value="Sin Helado">Sin Helado</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Fruta Incluida</label>
-                <select id="croissantFrutaSelect">
-                    <option value="Fresa">Fresa</option>
-                    <option value="Durazno en almíbar">Durazno en almíbar</option>
-                    <option value="Mix">Mix</option>
-                    <option value="Sin fruta">Sin fruta</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Topping Superior Incluido</label>
-                <select id="croissantToppingSelect">
-                    <option value="Chispas de chocolate">Chispas de chocolate</option>
-                    <option value="Chispas de colores">Chispas de colores</option>
-                    <option value="Chispas de yogurt">Chispas de yogurt</option>
-                    <option value="Nuez trozada">Nuez trozada</option>
-                    <option value="Almendra fileteada">Almendra fileteada</option>
-                    <option value="Galleta Lotus">Galleta Lotus</option>
-                    <option value="Galleta Oreo">Galleta Oreo</option>
-                    <option value="Bomboncitos de chocolate">Bomboncitos de chocolate</option>
-                    <option value="Sin topping">Sin topping</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Topping Extra (+$10)</label>
-                <select id="croissantExtraToppingSelect" class="select-topping-general"></select>
-            </div>
-        </div>
-
-        <!-- Extras Sundae -->
-        <div id="sundaeExtras" class="extra-options" style="display:none;">
-            <div class="form-group" id="groupSundaeMermelada">
-                <label>Mermelada / Untado Incluido</label>
-                <select id="sundaeMermeladaSelect">
-                    <option value="Fresa">Fresa</option>
-                    <option value="Mango">Mango</option>
-                    <option value="Maracuyá">Maracuyá</option>
-                    <option value="Moras">Moras</option>
-                    <option value="Kiwi">Kiwi</option>
-                    <option value="Hersheys">Hersheys</option>
-                    <option value="Lechera">Lechera</option>
-                    <option value="Caramelo">Caramelo</option>
-                    <option value="Oreo">Oreo</option>
-                    <option value="Sin untado">Sin untado</option>
-                </select>
-            </div>
-            <div class="form-group" id="groupSundaeFruta">
-                <label>Fruta Incluida</label>
-                <select id="sundaeFrutaSelect">
-                    <option value="Fresa">Fresa</option>
-                    <option value="Durazno en almíbar">Durazno en almíbar</option>
-                    <option value="Mix">Mix</option>
-                    <option value="Sin fruta">Sin fruta</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>¿Fruta Extra? (+$10)</label>
-                <select id="sundaeExtraFrutaSelect">
-                    <option value="Ninguna">No</option>
-                    <option value="Fresa">Fresa (+ $10.00)</option>
-                    <option value="Durazno en almíbar">Durazno (+ $10.00)</option>
-                </select>
-            </div>
-            <div class="form-group" id="groupSundaeToppingExtra">
-                <label>Topping Extra (+$10)</label>
-                <select id="sundaeToppingSelect" class="select-topping-general"></select>
-            </div>
-        </div>
-
-        <!-- Extras Cookie Sandwich -->
-        <div id="cookieExtras" class="extra-options" style="display:none;">
-            <div class="form-group">
-                <label>Topping Incluido</label>
-                <select id="cookieToppingSelect">
-                    <option value="Chispas de chocolate">Chispas de chocolate</option>
-                    <option value="Chispas de colores">Chispas de colores</option>
-                    <option value="Nuez trozada">Nuez trozada</option>
-                    <option value="Almendra fileteada">Almendra fileteada</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Topping Extra (+$10)</label>
-                <select id="cookieExtraToppingSelect" class="select-topping-general"></select>
-            </div>
-        </div>
-
-        <!-- Extras Frappé -->
-        <div id="frappeExtras" class="extra-options" style="display:none;">
-            <div class="form-group">
-                <label>Tipo de Leche</label>
-                <select id="frappeLecheSelect">
-                    <option value="Entera">Entera (+$0)</option>
-                    <option value="Deslactosada">Deslactosada (+$5)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Helado Suave Extra (+ $15)</label>
-                <select id="frappeHeladoSelect">
-                    <option value="Sin Helado">Sin Helado (+ $0)</option>
-                    <option value="Con Helado Suave">Con Helado Suave (+ $15.00)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Shot Extra Espresso</label>
-                <select id="frappeShotSelect">
-                    <option value="Sin Shot Extra">No</option>
-                    <option value="Con Shot Extra">Sí (+ $15.00)</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Extras Cono -->
-        <div id="conoExtras" class="extra-options" style="display:none;">
-            <div class="form-group">
-                <label>Topping Extra (+$5)</label>
-                <select id="cookieToppingSelect">
-                    <option value="Chispas de chocolate">Chispas de chocolate</option>
-                    <option value="Chispas de colores">Chispas de colores</option>
-                    <option value="Nuez trozada">Nuez trozada</option>
-                    <option value="Almendra fileteada">Almendra fileteada</option>
-                    <option value="Galleta Oreo">Galleta Oreo</option>
-                    <option value="Bomboncitos de chocolate">Bomboncitos de chocolate</option>
-                </select>
-            </div>
-        </div>
+    <!-- ============================================================== -->
+    <!-- 4. PANEL DE PERSONALIZACIÓN DEL PRODUCTO                       -->
+    <!-- Opciones dinámicas que aparecen según el producto elegido.    -->
+    <!-- ============================================================== -->
+    <div class="panel-personalizacion" id="panelPersonalizacion">
+        <h2 id="tituloProductoSeleccionado" style="margin-top:0; border:none; padding:0; margin-bottom:15px;">Personalizar: Vórtice</h2>
         
-        <!-- Extras Café -->
-        <div id="cafeExtras" class="extra-options" style="display:none;">
-            <div class="form-group">
+        <div class="grid-form">
+            <!-- Tamaño exclusivo para Vórtice -->
+            <div id="vorticeTamanoGroup" class="form-group extra-options" style="display:none;">
                 <label>Tamaño</label>
-                <select id="cafeTamanoSelect">
+                <select id="vorticeTamanoSelect">
+                    <option value="Original">Original</option>
+                    <option value="Baby">Baby</option>
+                </select>
+            </div>
+
+            <!-- Tamaño para Frappés -->
+            <div id="frappeTamanoGroup" class="form-group extra-options" style="display:none;">
+                <label>Tamaño</label>
+                <select id="frappeTamanoSelect">
                     <option value="Chico">Chico</option>
                     <option value="Grande">Grande</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>Temperatura</label>
-                <select id="cafeTemperaturaSelect">
-                    <option value="Caliente">Caliente</option>
-                    <option value="Frío (con hielo)">Frío (con hielo)</option>
-                </select>
-            </div>
-            <div class="form-group" id="groupCafeLeche">
-                <label>Tipo de Leche</label>
-                <select id="cafeLecheSelect">
-                    <option value="Entera">Entera (+$0)</option>
-                    <option value="Deslactosada">Deslactosada (+$5)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Shot Extra Espresso</label>
-                <select id="cafeShotSelect">
-                    <option value="Sin Shot Extra">No</option>
-                    <option value="Con Shot Extra">Sí (+ $15.00)</option>
-                </select>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <label>Cantidad</label>
-            <input type="number" id="cantidadInput" value="1" min="1">
-        </div>
+            <!-- Selector de Categoría Sundae (Clásico o Especial) -->
+            <div id="sundaeTipoGroup" class="form-group extra-options" style="display:none;">
+                <label>Categoría de Sundae</label>
+                <select id="sundaeTipoSelect" onchange="alCambiarTipoSundae()">
+                    <option value="Clásico">Sundae Clásico</option>
+                    <option value="Especial">Sundae Especial</option>
+                </select>
+            </div>
 
-        <button class="btn-add" onclick="agregarAlCarrito()">➕ Agregar</button>
+            <!-- Menú central que carga los sabores o variantes -->
+            <div class="form-group" id="groupVariante">
+                <label id="labelVariante">Sabor / Tipo</label>
+                <select id="varianteSelect" onchange="alCambiarVariante()"></select>
+            </div>
+
+            <!-- Extras de Vórtice -->
+            <div id="vorticeExtras" class="extra-options" style="display:none;">
+                <div class="form-group">
+                    <label>Fruta Incluida</label>
+                    <select id="vorticeFrutaSelect">
+                        <option value="Fresa">Fresa</option>
+                        <option value="Durazno en almíbar">Durazno en almíbar</option>
+                        <option value="Mixto">Mixto</option>
+                        <option value="Sin fruta">Sin fruta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Helado Suave</label>
+                    <select id="vorticeHeladoSelect">
+                        <option value="Con Helado">Con Helado Suave</option>
+                        <option value="Crema batida">Crema batida</option>
+                        <option value="Sin Helado">Sin Helado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Topping Superior Incluido</label>
+                    <select id="vorticeToppingSelect">
+                        <option value="Chispas de chocolate">Chispas de chocolate</option>
+                        <option value="Chispas de colores">Chispas de colores</option>
+                        <option value="Chispas de yogurt">Chispas de yogurt</option>
+                        <option value="Nuez trozada">Nuez trozada</option>
+                        <option value="Almendra fileteada">Almendra fileteada</option>
+                        <option value="Galleta Lotus">Galleta Lotus</option>
+                        <option value="Galleta Oreo">Galleta Oreo</option>
+                        <option value="Bomboncitos de chocolate">Bomboncitos de chocolate</option>
+                        <option value="Sin topping">Sin topping</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Topping Extra (+$10)</label>
+                    <select id="vorticeExtraToppingSelect" class="select-topping-general"></select>
+                </div>
+                <div class="form-group">
+                    <label>¿Vaso Extra? (+$5)</label>
+                    <select id="vorticeVasoExtraSelect">
+                        <option value="Sin Vaso Extra">No</option>
+                        <option value="Con Vaso Extra">Sí (+ $5.00)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Extras de Croissant y Pan de Muerto -->
+            <div id="croissantPanExtras" class="extra-options" style="display:none;">
+                <div class="form-group">
+                    <label>Helado Suave</label>
+                    <select id="croissantHeladoSelect">
+                        <option value="Con Helado">Con Helado Suave</option>
+                        <option value="Crema batida">Crema batida</option>
+                        <option value="Sin Helado">Sin Helado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fruta Incluida</label>
+                    <select id="croissantFrutaSelect">
+                        <option value="Fresa">Fresa</option>
+                        <option value="Durazno en almíbar">Durazno en almíbar</option>
+                        <option value="Mixto">Mixto</option>
+                        <option value="Sin fruta">Sin fruta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Topping Superior Incluido</label>
+                    <select id="croissantToppingSelect">
+                        <option value="Chispas de chocolate">Chispas de chocolate</option>
+                        <option value="Chispas de colores">Chispas de colores</option>
+                        <option value="Chispas de yogurt">Chispas de yogurt</option>
+                        <option value="Nuez trozada">Nuez trozada</option>
+                        <option value="Almendra fileteada">Almendra fileteada</option>
+                        <option value="Galleta Lotus">Galleta Lotus</option>
+                        <option value="Galleta Oreo">Galleta Oreo</option>
+                        <option value="Bomboncitos de chocolate">Bomboncitos de chocolate</option>
+                        <option value="Sin topping">Sin topping</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Topping Extra (+$10)</label>
+                    <select id="croissantExtraToppingSelect" class="select-topping-general"></select>
+                </div>
+            </div>
+
+            <!-- Extras de Sundae -->
+            <div id="sundaeExtras" class="extra-options" style="display:none;">
+                <div class="form-group" id="groupSundaeMermelada">
+                    <label>Mermelada / Untado Incluido</label>
+                    <select id="sundaeMermeladaSelect">
+                        <option value="Fresa">Fresa</option>
+                        <option value="Kiwi">Kiwi</option>
+                        <option value="Maracuyá">Maracuyá</option>
+                        <option value="Moras">Moras</option>
+                        <option value="Hersheys">Hersheys</option>
+                        <option value="Lechera">Lechera</option>
+                        <option value="Caramelo">Caramelo</option>
+                        <option value="Oreo">Oreo</option>
+                        <option value="Sin untado">Sin untado</option>
+                    </select>
+                </div>
+                <div class="form-group" id="groupSundaeFruta">
+                    <label>Fruta Incluida</label>
+                    <select id="sundaeFrutaSelect">
+                        <option value="Fresa">Fresa</option>
+                        <option value="Durazno en almíbar">Durazno en almíbar</option>
+                        <option value="Mixto">Mixto</option>
+                        <option value="Sin fruta">Sin fruta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>¿Fruta Extra? (+$10)</label>
+                    <select id="sundaeExtraFrutaSelect">
+                        <option value="Ninguna">No</option>
+                        <option value="Fresa">Fresa (+ $10.00)</option>
+                        <option value="Durazno en almíbar">Durazno (+ $10.00)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="groupSundaeToppingExtra">
+                    <label>Topping Extra (+$10)</label>
+                    <select id="sundaeToppingSelect" class="select-topping-general"></select>
+                </div>
+                <div class="form-group">
+                    <label>¿Vaso Extra? (+$5)</label>
+                    <select id="sundaeVasoExtraSelect">
+                        <option value="Sin Vaso Extra">No</option>
+                        <option value="Con Vaso Extra">Sí (+ $5.00)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Extras de Cono (Topping si es especial) -->
+            <div id="conoExtras" class="extra-options" style="display:none;">
+                <div class="form-group" id="groupConoTopping" style="display:none;">
+                    <label>Topping Especial Incluido</label>
+                    <select id="conoToppingSelect" class="select-topping-general"></select>
+                </div>
+            </div>
+
+            <!-- Extras de Cookie Sandwich -->
+            <div id="cookieExtras" class="extra-options" style="display:none;">
+                <div class="form-group">
+                    <label>Topping Incluido</label>
+                    <select id="cookieToppingSelect">
+                        <option value="Chispas de chocolate">Chispas de chocolate</option>
+                        <option value="Chispas de colores">Chispas de colores</option>
+                        <option value="Nuez trozada">Nuez trozada</option>
+                        <option value="Almendra fileteada">Almendra fileteada</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Topping Extra (+$10)</label>
+                    <select id="cookieExtraToppingSelect" class="select-topping-general"></select>
+                </div>
+            </div>
+
+            <!-- Extras de Frappé -->
+            <div id="frappeExtras" class="extra-options" style="display:none;">
+                <div class="form-group">
+                    <label>Tipo de Leche</label>
+                    <select id="frappeLecheSelect">
+                        <option value="Entera">Entera (+$0)</option>
+                        <option value="Deslactosada">Deslactosada (+$5)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Helado Suave Extra (+ $15)</label>
+                    <select id="frappeHeladoSelect">
+                        <option value="Sin Helado">Sin Helado (+ $0)</option>
+                        <option value="Con Helado Suave">Con Helado Suave (+ $15.00)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Shot Extra Espresso</label>
+                    <select id="frappeShotSelect">
+                        <option value="Sin Shot Extra">No</option>
+                        <option value="Con Shot Extra">Sí (+ $15.00)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Extras de Café -->
+            <div id="cafeExtras" class="extra-options" style="display:none;">
+                <div class="form-group">
+                    <label>Tamaño</label>
+                    <select id="cafeTamanoSelect">
+                        <option value="Chico">Chico</option>
+                        <option value="Grande">Grande</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Temperatura</label>
+                    <select id="cafeTemperaturaSelect">
+                        <option value="Caliente">Caliente</option>
+                        <option value="Frío (con hielo)">Frío (con hielo)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="groupCafeLeche">
+                    <label>Tipo de Leche</label>
+                    <select id="cafeLecheSelect">
+                        <option value="Entera">Entera (+$0)</option>
+                        <option value="Deslactosada">Deslactosada (+$5)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Shot Extra Espresso</label>
+                    <select id="cafeShotSelect">
+                        <option value="Sin Shot Extra">No</option>
+                        <option value="Con Shot Extra">Sí (+ $15.00)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" style="max-width: 110px;">
+                <label>Cantidad</label>
+                <input type="number" id="cantidadInput" value="1" min="1">
+            </div>
+
+            <button class="btn-add" onclick="agregarAlCarrito()">➕ Agregar a Orden</button>
+        </div>
     </div>
 
+    <!-- ============================================================== -->
+    <!-- 5. TABLA DEL CARRITO Y COBRO                                   -->
+    <!-- Muestra los ítems agregados antes de cobrarlos y guardarlos.    -->
+    <!-- ============================================================== -->
+    <h2>2. Orden Actual</h2>
     <table>
         <thead>
             <tr>
@@ -492,12 +668,44 @@
 
         <div class="total-display" id="totalDisplay">TOTAL: $0.00</div>
 
-        <button class="btn-pay" id="btnCobrar" onclick="registrarEnGoogleSheets()">☁️ Cobrar y Guardar en Google Sheets</button>
+        <button class="btn-pay" id="btnCobrar" onclick="registrarEnGoogleSheets()">☁️ Cobrar y Mandar a Comandas</button>
     </div>
 
+    <!-- ============================================================== -->
+    <!-- 6. PANTALLA DE COMANDAS KDS (UNIFICADA)                        -->
+    <!-- Para que quien prepare en barra/cocina vea todas las órdenes.  -->
+    <!-- ============================================================== -->
+    <div class="kds-container">
+        <div class="kds-header">
+            <h2> Pantalla de Comandas de Preparación</h2>
+        </div>
+
+        <div class="kds-columns">
+            <div>
+                <div class="kds-col-title" style="color: #ffca28;">
+                    <span>🟡 En Preparación</span>
+                    <span id="kdsCountPrep">0</span>
+                </div>
+                <div class="kds-grid" id="kdsPrepGrid"></div>
+            </div>
+
+            <div>
+                <div class="kds-col-title" style="color: #66bb6a;">
+                    <span>🟢 Listos para Entrega</span>
+                    <span id="kdsCountReady">0</span>
+                </div>
+                <div class="kds-grid" id="kdsReadyGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 7. CONTROL DE INVENTARIO NUBE                                  -->
+    <!-- Tarjetas de consulta y ajuste rápido para el Google Sheets.    -->
+    <!-- ============================================================== -->
     <div class="inventory-section">
         <div class="inventory-header">
-            <h2>📦 Mini Inventario Nube</h2>
+            <h2>Mini Inventario</h2>
             <button class="btn-sync" onclick="cargarInventarioNube()">🔄 Sincronizar</button>
         </div>
         <div class="inventory-grid">
@@ -511,7 +719,7 @@
             </div>
 
             <div class="inventory-card">
-                <h3>🍪 Galletas</h3>
+                <h3>Galletas</h3>
                 <div class="inventory-count" id="stockCookieDisplay">Cargando...</div>
                 <div class="inventory-inputs">
                     <input type="number" id="inputStockCookie" placeholder="Cant." min="0" style="width: 100px;">
@@ -520,7 +728,7 @@
             </div>
 
             <div class="inventory-card">
-                <h3>💀 Pan de Muerto</h3>
+                <h3>Pan de Muerto</h3>
                 <div class="inventory-count" id="stockPanMuertoDisplay">Cargando...</div>
                 <div class="inventory-inputs">
                     <input type="number" id="inputStockPanMuerto" placeholder="Cant." min="0" style="width: 100px;">
@@ -529,7 +737,7 @@
             </div>
 
             <div class="inventory-card">
-                <h3>🍦 Bolsas de Helado</h3>
+                <h3>Bolsas de Helado</h3>
                 <div class="inventory-count" id="stockBolsasHeladoDisplay">Cargando...</div>
                 <div class="inventory-inputs">
                     <input type="number" id="inputStockBolsasHelado" placeholder="Cant." min="0" style="width: 100px;">
@@ -540,11 +748,23 @@
     </div>
 </div>
 
+<!-- ============================================================== -->
+<!-- 8. LÓGICA DE PROGRAMACIÓN (JAVASCRIPT)                          -->
+<!-- ============================================================== -->
 <script>
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbw6syuae7Ty4bMq_RhHFY1WJClMHuB5HLZQdxheKquXotR9DJnK5TJ0uXXzXiAofexnkw/exec";
+    // -------------------------------------------------------------
+    // URL DE LA APLICACIÓN WEB DE GOOGLE APPS SCRIPT
+    // Si cambias de hoja o creas un script nuevo, actualiza esta URL:
+    // -------------------------------------------------------------
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbxzfmxfWf2xtHzKnSwcGVUEOhyvSlvCzWrXA0H7M_UmqpsYGCzUn9wNw8sFgjkQfRyLdQ/exec";
 
+    // -------------------------------------------------------------
+    // CATÁLOGO DE PRODUCTOS Y PRECIOS
+    // Modifica aquí cualquier precio o agrega nuevos sabores/productos.
+    // -------------------------------------------------------------
     const CATALOGO = {
         "Vórtice": {
+            "Sin untado": { "Original": 110, "Baby": 80 },
             "Lechera": { "Original": 110, "Baby": 80 },
             "Mermelada de fresa": { "Original": 110, "Baby": 80 },
             "Chocolate abuelita": { "Original": 110, "Baby": 80 },
@@ -560,24 +780,33 @@
             "Pistache": 95,
             "Lotus": 95
         },
-        "Pan de Muerto": {
-            "Lechera": 95,
-            "Mermelada de fresa": 95,
-            "Chocolate abuelita": 95,
-            "Nutella": 95,
-            "Pistache": 95,
-            "Lotus": 95
+        "Ice Pan de Muerto": {
+            "Tradicional con Helado Griego": 105
         },
         "Sundae": {
-            "Clásico": 70, 
-            "Especial Lotus + galleta lotus": 80,
-            "Especial Pistache + nuez": 80,
-            "Especial Nutella + cookie": 80,
-            "Especial Chocolate abuelita + bomboncitos": 80,
-            "Especial Kinder delice + hershey's": 80
+            "Clásico": {
+                "Sundae Clásico": 70
+            },
+            "Especial": {
+                "Especial Lotus + galleta lotus": 80,
+                "Especial Pistache + nuez": 80,
+                "Especial Nutella + cookie": 80,
+                "Especial Chocolate abuelita + bomboncitos": 80,
+                "Especial Kinder delice + hershey's": 80
+            }
+        },
+        "Cono": {
+            "Sencillo": 35,
+            "Especial": 45
         },
         "Cookie Sandwich": { "Sencillo": 70 },
         "Frappé": {
+            // Frappés de Temporada Monstruosos
+            "Purple Monster (Taro + moras + ojos)": { "Chico": 90, "Grande": 100 },
+            "Bloody Passion (Maracuyá + fresa + ojos)": { "Chico": 90, "Grande": 100 },
+            "Frankie Matcha (Matcha + kiwi + ojos)": { "Chico": 90, "Grande": 100 },
+            "Pan de Muerto Frappé (Pan de muerto + café)": { "Chico": 90, "Grande": 100 },
+            // Sabores Clásicos
             "Chocolate": { "Chico": 70, "Grande": 80 },
             "Horchata": { "Chico": 70, "Grande": 80 },
             "Capuchino": { "Chico": 70, "Grande": 80 },
@@ -590,10 +819,10 @@
             "Piña colada": { "Chico": 75, "Grande": 85 }
         },
         "Café": {
+            "Pumpkin Spice Latte": { "Chico": 80, "Grande": 90 },
             "Capuchino": { "Chico": 50, "Grande": 60 },
             "Late": { "Chico": 50, "Grande": 60 },
-            "Americano": { "Chico": 40, "Grande": 45 },
-            "Pumpkin Spice Latte": { "Chico": 85, "Grande": 95 }
+            "Americano": { "Chico": 40, "Grande": 45 }
         },
         "Bebidas": {
             "Coca - Cola Regular 355 ml": 35,
@@ -602,6 +831,10 @@
         }
     };
 
+    // -------------------------------------------------------------
+    // LISTA COMPLETA DE TOPPINGS EXTRAS (+$10)
+    // Puedes sumar o cambiar el nombre de cualquier topping aquí:
+    // -------------------------------------------------------------
     const LISTA_TOPPINGS_COMPLETA = [
         { val: "Ninguno", text: "Ninguno" },
         { val: "Chispas de chocolate", text: "Chispas de chocolate (+ $10.00)" },
@@ -624,21 +857,22 @@
         { val: "Untado Crema de Pistache", text: "Untado Pistache (+ $10.00)" }
     ];
 
+    // Variables de estado global
     let carrito = [];
     let stockVortices = 0;
     let stockGalletas = 0;
     let stockPanMuerto = 0;
     let stockBolsasHelado = 0;
 
-    window.onload = function() {
-        const prodSelect = document.getElementById("productoSelect");
-        for (let prod in CATALOGO) {
-            let opt = document.createElement("option");
-            opt.value = prod;
-            opt.textContent = prod;
-            prodSelect.appendChild(opt);
-        }
+    let productoActual = "Vórtice";
+    // Guarda las comandas en el almacenamiento local del navegador para que no se borren al recargar
+    let comandas = JSON.parse(localStorage.getItem("vortice_comandas") || "[]");
 
+    // Inicialización al cargar la ventana
+    window.onload = function() {
+        renderCatalogoNav();
+
+        // Rellena todos los selectores de toppings extra
         document.querySelectorAll(".select-topping-general").forEach(select => {
             select.innerHTML = "";
             LISTA_TOPPINGS_COMPLETA.forEach(item => {
@@ -649,8 +883,35 @@
             });
         });
 
+        seleccionarProducto("Vórtice");
         cargarInventarioNube();
+        renderKDS();
+        setInterval(actualizarTiemposKDS, 30000); // Actualiza minutos transcurridos cada 30 segundos
     };
+
+    // Renderiza la barra superior de botones de productos
+    function renderCatalogoNav() {
+        const nav = document.getElementById("catalogoNav");
+        nav.innerHTML = "";
+        for (let prod in CATALOGO) {
+            const btn = document.createElement("button");
+            btn.className = "btn-producto-tab";
+            btn.textContent = prod;
+            btn.onclick = () => seleccionarProducto(prod);
+            nav.appendChild(btn);
+        }
+    }
+
+    // Cambia el producto activo al dar clic en la barra superior
+    function seleccionarProducto(prod) {
+        productoActual = prod;
+        document.querySelectorAll(".btn-producto-tab").forEach(btn => {
+            btn.classList.toggle("active", btn.textContent === prod);
+        });
+
+        document.getElementById("tituloProductoSeleccionado").textContent = `Personalizar: ${prod}`;
+        alCambiarProducto();
+    }
 
     function obtenerFechaFormateada() {
         const ahora = new Date();
@@ -662,6 +923,7 @@
         return `${fechaTexto} a las ${horas}:${minutos}:${segundos}`;
     }
 
+    // Consulta el corte de ventas del día a Google Sheets
     async function consultarCorte(tipo) {
         const display = document.getElementById("resultadoCorte");
         display.textContent = "Consultando...";
@@ -671,18 +933,18 @@
             const data = await res.json();
 
             if (tipo === "efectivo") {
-                display.textContent = `💵 Efectivo Hoy: $${data.efectivo.toFixed(2)}`;
+                display.textContent = `Efectivo Hoy: $${data.efectivo.toFixed(2)}`;
             } else if (tipo === "transferencia") {
-                display.textContent = `📱 Transferencia Hoy: $${data.transferencia.toFixed(2)}`;
+                display.textContent = ` Transferencia Hoy: $${data.transferencia.toFixed(2)}`;
             } else if (tipo === "tarjeta") {
-                display.textContent = `💳 Tarjeta Hoy: $${data.tarjeta.toFixed(2)}`;
+                display.textContent = `Tarjeta Hoy: $${data.tarjeta.toFixed(2)}`;
             } else if (tipo === "todos") {
                 display.textContent = `Total Hoy: $${data.totalGeneral.toFixed(2)}`;
                 alert(
-                    `📋 CORTE DE HOY:\n\n` +
-                    `💵 Efectivo: $${data.efectivo.toFixed(2)}\n` +
-                    `📱 Transferencia: $${data.transferencia.toFixed(2)}\n` +
-                    `💳 Tarjeta: $${data.tarjeta.toFixed(2)}\n` +
+                    `CORTE DE HOY:\n\n` +
+                    ` Efectivo: $${data.efectivo.toFixed(2)}\n` +
+                    ` Transferencia: $${data.transferencia.toFixed(2)}\n` +
+                    ` Tarjeta: $${data.tarjeta.toFixed(2)}\n` +
                     `------------------------------------\n` +
                     `TOTAL DEL DÍA: $${data.totalGeneral.toFixed(2)}`
                 );
@@ -693,6 +955,7 @@
         }
     }
 
+    // Descarga el stock actual desde Google Sheets
     async function cargarInventarioNube() {
         document.getElementById("stockVorticeDisplay").textContent = "...";
         document.getElementById("stockCookieDisplay").textContent = "...";
@@ -719,6 +982,7 @@
         document.getElementById("stockBolsasHeladoDisplay").textContent = `${stockBolsasHelado} bolsas`;
     }
 
+    // Guarda ajustes manuales de stock en Google Sheets
     async function ajustarStockNube(tipo) {
         let nuevoValor = 0;
         let inputId = "";
@@ -757,15 +1021,19 @@
         }
     }
 
+    // Controla qué selectores de personalización se muestran según el producto activo
     function alCambiarProducto() {
-        const prod = document.getElementById("productoSelect").value;
+        const prod = productoActual;
         const varSelect = document.getElementById("varianteSelect");
         
+        // Ocultar todos los paneles de personalización por defecto
         document.getElementById("vorticeExtras").style.display = "none";
         document.getElementById("croissantPanExtras").style.display = "none";
         document.getElementById("vorticeTamanoGroup").style.display = "none";
         document.getElementById("frappeTamanoGroup").style.display = "none";
+        document.getElementById("sundaeTipoGroup").style.display = "none";
         document.getElementById("sundaeExtras").style.display = "none";
+        document.getElementById("conoExtras").style.display = "none";
         document.getElementById("cookieExtras").style.display = "none";
         document.getElementById("frappeExtras").style.display = "none";
         document.getElementById("cafeExtras").style.display = "none";
@@ -777,12 +1045,21 @@
             document.getElementById("vorticeTamanoGroup").style.display = "flex";
             document.getElementById("vorticeExtras").style.display = "contents";
             labelVariante.textContent = "Untado (Base)";
-        } else if (prod === "Ice Croissant" || prod === "Pan de Muerto") {
+        } else if (prod === "Ice Croissant") {
             document.getElementById("croissantPanExtras").style.display = "contents";
             labelVariante.textContent = "Untado (Base)";
+        } else if (prod === "Ice Pan de Muerto") {
+            document.getElementById("croissantPanExtras").style.display = "contents";
+            labelVariante.textContent = "Tipo de Pan";
         } else if (prod === "Sundae") {
+            document.getElementById("sundaeTipoGroup").style.display = "flex";
             document.getElementById("sundaeExtras").style.display = "contents";
-            labelVariante.textContent = "Tipo de Sundae";
+            labelVariante.textContent = "Sabor / Receta";
+            alCambiarTipoSundae();
+            return;
+        } else if (prod === "Cono") {
+            document.getElementById("conoExtras").style.display = "contents";
+            labelVariante.textContent = "Tipo de Cono";
         } else if (prod === "Cookie Sandwich") {
             document.getElementById("cookieExtras").style.display = "contents";
             labelVariante.textContent = "Variante";
@@ -797,6 +1074,7 @@
             labelVariante.textContent = "Variante / Tamaño";
         }
 
+        // Llenar el selector con las opciones del catálogo correspondiente
         if (prod && CATALOGO[prod]) {
             for (let variante in CATALOGO[prod]) {
                 let opt = document.createElement("option");
@@ -814,26 +1092,48 @@
         alCambiarVariante();
     }
 
+    // Lógica para alternar entre Sundae Clásico y Especial
+    function alCambiarTipoSundae() {
+        const tipo = document.getElementById("sundaeTipoSelect").value;
+        const varSelect = document.getElementById("varianteSelect");
+        const groupFruta = document.getElementById("groupSundaeFruta");
+        const groupMermelada = document.getElementById("groupSundaeMermelada");
+        
+        varSelect.innerHTML = "";
+        const opciones = CATALOGO["Sundae"][tipo];
+
+        for (let sabor in opciones) {
+            let opt = document.createElement("option");
+            opt.value = sabor;
+            opt.textContent = `${sabor} ($${opciones[sabor]})`;
+            varSelect.appendChild(opt);
+        }
+
+        if (tipo === "Clásico") {
+            groupFruta.style.display = "flex";
+            groupMermelada.style.display = "flex";
+        } else {
+            groupFruta.style.display = "none";
+            groupMermelada.style.display = "none";
+        }
+    }
+
+    // Reglas adicionales al cambiar una variante específica
     function alCambiarVariante() {
-        const prod = document.getElementById("productoSelect").value;
+        const prod = productoActual;
         const variante = document.getElementById("varianteSelect").value;
 
-        if (prod === "Sundae") {
-            const groupSundaeFruta = document.getElementById("groupSundaeFruta");
-            const groupSundaeMermelada = document.getElementById("groupSundaeMermelada");
-            const groupSundaeToppingExtra = document.getElementById("groupSundaeToppingExtra");
-
-            groupSundaeToppingExtra.style.display = "flex";
-
-            if (variante.startsWith("Especial")) {
-                groupSundaeFruta.style.display = "none";
-                groupSundaeMermelada.style.display = "none";
+        // Despliega topping solo si el cono es especial
+        if (prod === "Cono") {
+            const groupConoTopping = document.getElementById("groupConoTopping");
+            if (variante === "Especial") {
+                groupConoTopping.style.display = "flex";
             } else {
-                groupSundaeFruta.style.display = "flex";
-                groupSundaeMermelada.style.display = "flex";
+                groupConoTopping.style.display = "none";
             }
         }
 
+        // Oculta tipo de leche si es café americano
         if (prod === "Café") {
             const groupCafeLeche = document.getElementById("groupCafeLeche");
             if (variante === "Americano") {
@@ -844,13 +1144,17 @@
         }
     }
 
+    // -------------------------------------------------------------
+    // LÓGICA DE AGREGAR AL CARRITO Y CÁLCULO DE PRECIOS
+    // Si cambias costos de extras (+10, +15, +5), modifícalos aquí:
+    // -------------------------------------------------------------
     function agregarAlCarrito() {
-        const prod = document.getElementById("productoSelect").value;
+        const prod = productoActual;
         const variante = document.getElementById("varianteSelect").value;
         const cantidad = parseInt(document.getElementById("cantidadInput").value);
 
         if (!prod || !variante || cantidad <= 0) {
-            alert("Por favor selecciona un producto válido.");
+            alert("Por favor selecciona una opción válida.");
             return;
         }
 
@@ -868,14 +1172,19 @@
             const helado = document.getElementById("vorticeHeladoSelect").value;
             const top = document.getElementById("vorticeToppingSelect").value;
             const topExtra = document.getElementById("vorticeExtraToppingSelect").value;
+            const vasoExtra = document.getElementById("vorticeVasoExtraSelect").value;
 
             let detalles = [`${helado}`, `Top: ${top}`];
             if (topExtra !== "Ninguno") {
-                precio += 10;
+                precio += 10; // Costo topping extra
                 detalles.push(`Extra: ${topExtra} (+$10)`);
             }
+            if (vasoExtra === "Con Vaso Extra") {
+                precio += 5; // Costo vaso extra
+                detalles.push("Vaso Extra (+$5)");
+            }
             toppingExtra = detalles.join(" / ");
-        } else if (prod === "Ice Croissant" || prod === "Pan de Muerto") {
+        } else if (prod === "Ice Croissant" || prod === "Ice Pan de Muerto") {
             precio = CATALOGO[prod][variante];
             saborBase = variante;
             fruta = document.getElementById("croissantFrutaSelect").value;
@@ -890,26 +1199,42 @@
             }
             toppingExtra = detalles.join(" / ");
         } else if (prod === "Sundae") {
-            precio = CATALOGO[prod][variante];
+            const tipoSundae = document.getElementById("sundaeTipoSelect").value;
+            precio = CATALOGO["Sundae"][tipoSundae][variante];
+            saborBase = variante;
+
             let topExtra = document.getElementById("sundaeToppingSelect").value;
             let extraFruta = document.getElementById("sundaeExtraFrutaSelect").value;
+            let vasoExtra = document.getElementById("sundaeVasoExtraSelect").value;
             let extrasArray = [];
 
-            if (variante === "Clásico") {
+            if (tipoSundae === "Clásico") {
                 let mermelada = document.getElementById("sundaeMermeladaSelect").value;
                 fruta = document.getElementById("sundaeFrutaSelect").value;
                 extrasArray.push(`Mermelada/Untado: ${mermelada}`);
             }
 
             if (extraFruta !== "Ninguna") {
-                precio += 10;
+                precio += 10; // Costo fruta extra
                 extrasArray.push(`Fruta Extra: ${extraFruta} (+$10)`);
             }
             if (topExtra !== "Ninguno") {
-                precio += 10;
+                precio += 10; // Costo topping extra
                 extrasArray.push(`Topping Extra: ${topExtra} (+$10)`);
             }
+            if (vasoExtra === "Con Vaso Extra") {
+                precio += 5; // Costo vaso extra
+                extrasArray.push("Vaso Extra (+$5)");
+            }
             toppingExtra = extrasArray.length > 0 ? extrasArray.join(" / ") : "N/A";
+        } else if (prod === "Cono") {
+            precio = CATALOGO[prod][variante];
+            if (variante === "Especial") {
+                const conoTopping = document.getElementById("conoToppingSelect").value;
+                toppingExtra = `Topping: ${conoTopping}`;
+            } else {
+                toppingExtra = "Sencillo";
+            }
         } else if (prod === "Cookie Sandwich") {
             precio = CATALOGO[prod][variante];
             let topIncluido = document.getElementById("cookieToppingSelect").value;
@@ -931,19 +1256,19 @@
 
             let detallesExtras = [];
             if (leche === "Deslactosada") {
-                precio += 5;
+                precio += 5; // Costo leche deslactosada
                 detallesExtras.push(`Leche ${leche} (+$5)`);
             } else {
                 detallesExtras.push(`Leche ${leche}`);
             }
 
             if (heladoExtra === "Con Helado Suave") {
-                precio += 15;
+                precio += 15; // Costo helado suave extra
                 detallesExtras.push("Helado Suave Extra (+$15)");
             }
 
             if (shot === "Con Shot Extra") {
-                precio += 15;
+                precio += 15; // Costo shot espresso extra
                 detallesExtras.push("Shot Extra Espresso (+$15)");
             }
             toppingExtra = detallesExtras.join(" / ");
@@ -1020,12 +1345,16 @@
         document.getElementById("totalDisplay").textContent = `TOTAL: $${total.toFixed(2)}`;
     }
 
+    // -------------------------------------------------------------
+    // ENVÍO DE ORDEN A GOOGLE SHEETS Y CREACIÓN DE COMANDA KDS
+    // -------------------------------------------------------------
     async function registrarEnGoogleSheets() {
         if (carrito.length === 0) {
             alert("El carrito está vacío.");
             return;
         }
 
+        // Cálculo de insumos a descontar
         let reqVortices = 0;
         let reqGalletas = 0;
         let reqPanMuerto = 0;
@@ -1035,11 +1364,12 @@
                 reqVortices += (item.tamano === "Baby") ? (item.cantidad * 0.5) : (item.cantidad * 1);
             } else if (item.producto === "Cookie Sandwich") {
                 reqGalletas += (item.cantidad * 2);
-            } else if (item.producto === "Pan de Muerto") {
+            } else if (item.producto === "Ice Pan de Muerto" || item.sabor_base.includes("Pan de Muerto")) {
                 reqPanMuerto += item.cantidad;
             }
         });
 
+        // Verificaciones de existencias mínimas
         if (reqVortices > stockVortices) {
             alert(`Stock insuficiente de Vórtices. Requieres ${reqVortices} porciones y dispones de ${stockVortices}.`);
             return;
@@ -1094,11 +1424,12 @@
             let data = await res.json();
 
             if (data.status === "success") {
-                alert(`✅ Venta registrada exitosamente.\n📋 Venta N°: ${data.numOrden}`);
+                // Registra la nueva comanda en la pantalla KDS de preparación
+                agregarComandaKDS(data.numOrden, payloadItems);
+
+                alert(`✅ Venta registrada exitosamente.\n📋 Venta N°: ${data.numOrden}\n🍳 Enviada a Comandas.`);
                 carrito = [];
                 renderCarrito();
-                document.getElementById("productoSelect").value = "";
-                alCambiarProducto();
                 await cargarInventarioNube();
             } else {
                 alert("❌ Error en el servidor: " + data.message);
@@ -1108,8 +1439,116 @@
             alert("❌ Error al guardar la venta: " + error.message);
         } finally {
             btnCobrar.disabled = false;
-            btnCobrar.textContent = "☁️ Cobrar y Guardar en Google Sheets";
+            btnCobrar.textContent = "☁️ Cobrar y Mandar a Comandas";
         }
+    }
+
+    // -------------------------------------------------------------
+    // LÓGICA DE LA PANTALLA KDS (COCINA / BARRA)
+    // -------------------------------------------------------------
+    function agregarComandaKDS(numOrden, items) {
+        const nuevaComanda = {
+            id: Date.now(),
+            numOrden: numOrden,
+            timestamp: Date.now(),
+            estado: "preparando", // Estados: 'preparando' o 'listo'
+            items: items
+        };
+
+        comandas.unshift(nuevaComanda);
+        guardarComandas();
+        renderKDS();
+    }
+
+    function guardarComandas() {
+        localStorage.setItem("vortice_comandas", JSON.stringify(comandas));
+    }
+
+    function cambiarEstadoComanda(id, nuevoEstado) {
+        const comanda = comandas.find(c => c.id === id);
+        if (comanda) {
+            if (nuevoEstado === "entregado") {
+                comandas = comandas.filter(c => c.id !== id);
+            } else {
+                comanda.estado = nuevoEstado;
+            }
+            guardarComandas();
+            renderKDS();
+        }
+    }
+
+    function renderKDS() {
+        const prepGrid = document.getElementById("kdsPrepGrid");
+        const readyGrid = document.getElementById("kdsReadyGrid");
+        prepGrid.innerHTML = "";
+        readyGrid.innerHTML = "";
+
+        let countPrep = 0;
+        let countReady = 0;
+        const ahora = Date.now();
+
+        comandas.forEach(comanda => {
+            const minutos = Math.floor((ahora - comanda.timestamp) / 60000);
+            // Si supera los 7 minutos sin marcarse como lista, activa la alerta roja
+            const retrasado = minutos >= 7 && comanda.estado === "preparando";
+
+            let itemsHTML = comanda.items.map(it => {
+                let badges = [];
+                if (it.tamano !== "N/A") badges.push(`<span class="kds-badge">${it.tamano}</span>`);
+                if (it.fruta !== "N/A") {
+                    badges.push(`<span class="kds-badge ${it.fruta === 'Mixto' ? 'alert' : ''}">Fruta: ${it.fruta}</span>`);
+                }
+
+                // Resalta en rojo detalles críticos para no equivocarse al preparar
+                if (it.toppingExtra !== "N/A") {
+                    const partes = it.toppingExtra.split(" / ");
+                    partes.forEach(p => {
+                        const esCritico = p.includes("Deslactosada") || p.includes("Sin Helado") || p.includes("Vaso Extra") || p.includes("Shot Extra") || p.includes("Sin untado");
+                        badges.push(`<span class="kds-badge ${esCritico ? 'alert' : ''}">${p}</span>`);
+                    });
+                }
+
+                return `
+                    <div class="kds-item">
+                        <div class="kds-item-name">
+                            <span>${it.cantidad}x ${it.producto} (${it.variante})</span>
+                        </div>
+                        <div>${badges.join("")}</div>
+                    </div>
+                `;
+            }).join("");
+
+            let cardHTML = `
+                <div class="kds-card ${retrasado ? 'delayed' : ''}">
+                    <div class="kds-card-head">
+                        <span class="kds-order-num">#Orden ${comanda.numOrden}</span>
+                        <span class="kds-timer">⏱️ hace ${minutos} min</span>
+                    </div>
+                    <div>${itemsHTML}</div>
+                    <div class="kds-card-actions">
+                        ${comanda.estado === "preparando" 
+                            ? `<button class="btn-kds-ready" onclick="cambiarEstadoComanda(${comanda.id}, 'listo')">✅ Marcar Listo</button>`
+                            : `<button class="btn-kds-deliver" onclick="cambiarEstadoComanda(${comanda.id}, 'entregado')">📦 Entregar y Quitar</button>`
+                        }
+                    </div>
+                </div>
+            `;
+
+            if (comanda.estado === "preparando") {
+                prepGrid.innerHTML += cardHTML;
+                countPrep++;
+            } else {
+                readyGrid.innerHTML += cardHTML;
+                countReady++;
+            }
+        });
+
+        document.getElementById("kdsCountPrep").textContent = countPrep;
+        document.getElementById("kdsCountReady").textContent = countReady;
+    }
+
+    function actualizarTiemposKDS() {
+        renderKDS();
     }
 </script>
 
