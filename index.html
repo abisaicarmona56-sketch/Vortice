@@ -357,9 +357,9 @@
     <!-- ============================================================== -->
     <div class="corte-bar">
         <span class="corte-titulo">📊 Total de Hoy:</span>
-        <button class="btn-corte" onclick="consultarCorte('efectivo')"> Efectivo</button>
-        <button class="btn-corte" onclick="consultarCorte('transferencia')"> Transferencia</button>
-        <button class="btn-corte" onclick="consultarCorte('tarjeta')"> Tarjeta</button>
+        <button class="btn-corte" onclick="consultarCorte('efectivo')">💵 Efectivo</button>
+        <button class="btn-corte" onclick="consultarCorte('transferencia')">📱 Transferencia</button>
+        <button class="btn-corte" onclick="consultarCorte('tarjeta')">💳 Tarjeta</button>
         <button class="btn-corte" onclick="consultarCorte('todos')">🧾 Corte Completo</button>
         <span class="display-corte" id="resultadoCorte"></span>
     </div>
@@ -677,7 +677,7 @@
     <!-- ============================================================== -->
     <div class="kds-container">
         <div class="kds-header">
-            <h2> Pantalla de Comandas de Preparación</h2>
+            <h2>🍳 Pantalla de Comandas de Preparación (KDS)</h2>
         </div>
 
         <div class="kds-columns">
@@ -705,7 +705,7 @@
     <!-- ============================================================== -->
     <div class="inventory-section">
         <div class="inventory-header">
-            <h2>Mini Inventario</h2>
+            <h2>📦 Mini Inventario Nube</h2>
             <button class="btn-sync" onclick="cargarInventarioNube()">🔄 Sincronizar</button>
         </div>
         <div class="inventory-grid">
@@ -719,7 +719,7 @@
             </div>
 
             <div class="inventory-card">
-                <h3>Galletas</h3>
+                <h3>🍪 Galletas</h3>
                 <div class="inventory-count" id="stockCookieDisplay">Cargando...</div>
                 <div class="inventory-inputs">
                     <input type="number" id="inputStockCookie" placeholder="Cant." min="0" style="width: 100px;">
@@ -728,7 +728,7 @@
             </div>
 
             <div class="inventory-card">
-                <h3>Pan de Muerto</h3>
+                <h3>💀 Pan de Muerto</h3>
                 <div class="inventory-count" id="stockPanMuertoDisplay">Cargando...</div>
                 <div class="inventory-inputs">
                     <input type="number" id="inputStockPanMuerto" placeholder="Cant." min="0" style="width: 100px;">
@@ -737,7 +737,7 @@
             </div>
 
             <div class="inventory-card">
-                <h3>Bolsas de Helado</h3>
+                <h3>🍦 Bolsas de Helado</h3>
                 <div class="inventory-count" id="stockBolsasHeladoDisplay">Cargando...</div>
                 <div class="inventory-inputs">
                     <input type="number" id="inputStockBolsasHelado" placeholder="Cant." min="0" style="width: 100px;">
@@ -796,8 +796,8 @@
             }
         },
         "Cono": {
-            "Sencillo": 25,
-            "Especial": 30
+            "Sencillo": 35,
+            "Especial": 45
         },
         "Cookie Sandwich": { "Sencillo": 70 },
         "Frappé": {
@@ -806,7 +806,6 @@
             "Bloody Passion (Maracuyá + fresa + ojos)": { "Chico": 90, "Grande": 100 },
             "Frankie Matcha (Matcha + kiwi + ojos)": { "Chico": 90, "Grande": 100 },
             "Pan de Muerto Frappé (Pan de muerto + café)": { "Chico": 90, "Grande": 100 },
-            
             // Sabores Clásicos
             "Chocolate": { "Chico": 70, "Grande": 80 },
             "Horchata": { "Chico": 70, "Grande": 80 },
@@ -816,7 +815,6 @@
             "Taro": { "Chico": 80, "Grande": 90 },
             "Matcha": { "Chico": 80, "Grande": 90 },
             "Pistache": { "Chico": 80, "Grande": 90 },
-            
             "Maracuyá": { "Chico": 75, "Grande": 85 },
             "Piña colada": { "Chico": 75, "Grande": 85 }
         },
@@ -857,7 +855,6 @@
         { val: "Untado Lechera", text: "Untado Lechera (+ $10.00)" },
         { val: "Untado Lotus", text: "Untado Lotus (+ $10.00)" },
         { val: "Untado Crema de Pistache", text: "Untado Pistache (+ $10.00)" }
-        { val: "Kinder Delice", text: "Kinder Delice (+ $20.00)" }
     ];
 
     // Variables de estado global
@@ -936,18 +933,18 @@
             const data = await res.json();
 
             if (tipo === "efectivo") {
-                display.textContent = `Efectivo Hoy: $${data.efectivo.toFixed(2)}`;
+                display.textContent = `💵 Efectivo Hoy: $${data.efectivo.toFixed(2)}`;
             } else if (tipo === "transferencia") {
-                display.textContent = ` Transferencia Hoy: $${data.transferencia.toFixed(2)}`;
+                display.textContent = `📱 Transferencia Hoy: $${data.transferencia.toFixed(2)}`;
             } else if (tipo === "tarjeta") {
-                display.textContent = `Tarjeta Hoy: $${data.tarjeta.toFixed(2)}`;
+                display.textContent = `💳 Tarjeta Hoy: $${data.tarjeta.toFixed(2)}`;
             } else if (tipo === "todos") {
                 display.textContent = `Total Hoy: $${data.totalGeneral.toFixed(2)}`;
                 alert(
-                    `CORTE DE HOY:\n\n` +
-                    ` Efectivo: $${data.efectivo.toFixed(2)}\n` +
-                    ` Transferencia: $${data.transferencia.toFixed(2)}\n` +
-                    ` Tarjeta: $${data.tarjeta.toFixed(2)}\n` +
+                    `📋 CORTE DE HOY:\n\n` +
+                    `💵 Efectivo: $${data.efectivo.toFixed(2)}\n` +
+                    `📱 Transferencia: $${data.transferencia.toFixed(2)}\n` +
+                    `💳 Tarjeta: $${data.tarjeta.toFixed(2)}\n` +
                     `------------------------------------\n` +
                     `TOTAL DEL DÍA: $${data.totalGeneral.toFixed(2)}`
                 );
