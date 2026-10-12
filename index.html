@@ -111,6 +111,11 @@
             box-shadow: 0 3px 8px rgba(62, 46, 34, 0.25);
         }
 
+        .btn-producto-tab.btn-neutro {
+            border-style: dashed;
+            color: var(--color4);
+        }
+
         .panel-personalizacion {
             background: var(--color1);
             padding: 20px;
@@ -324,7 +329,6 @@
         }
         .btn-kds-deliver:hover { background: #0d47a1; }
 
-        /* Inventario */
         .inventory-section {
             background: var(--color1);
             border: 1px solid var(--color2);
@@ -378,9 +382,13 @@
 
     <!-- 4. PANEL DE PERSONALIZACIÓN -->
     <div class="panel-personalizacion" id="panelPersonalizacion">
-        <h2 id="tituloProductoSeleccionado" style="margin-top:0; border:none; padding:0; margin-bottom:15px;">Personalizar: Vórtice</h2>
+        <h2 id="tituloProductoSeleccionado" style="margin-top:0; border:none; padding:0; margin-bottom:15px;">Selecciona un producto arriba</h2>
         
-        <div class="grid-form">
+        <div id="mensajeSinSeleccion" style="text-align: center; padding: 25px 10px; color: var(--color4); font-weight: bold; font-size: 1.05rem;">
+            👆 Toca alguno de los productos de la barra superior para abrir sus opciones de preparación.
+        </div>
+
+        <div class="grid-form" id="formularioCampos" style="display:none;">
             <!-- Tamaño Vórtice -->
             <div id="vorticeTamanoGroup" class="form-group extra-options" style="display:none;">
                 <label>Tamaño</label>
@@ -430,6 +438,7 @@
                     <select id="vorticeHeladoSelect">
                         <option value="Con Helado">Con Helado Suave</option>
                         <option value="Helado Taro">Helado Suave Taro (+ $10)</option>
+                        <option value="Helado combinado">Helado  combinado (+ $10)</option>
                         <option value="Crema batida">Crema batida</option>
                         <option value="Sin Helado">Sin Helado</option>
                     </select>
@@ -440,11 +449,13 @@
                         <option value="Chispas de chocolate">Chispas de chocolate</option>
                         <option value="Chispas de colores">Chispas de colores</option>
                         <option value="Chispas de yogurt">Chispas de yogurt</option>
+                        <option value="Chispas hallowen">Chispas hallowen</option>
                         <option value="Nuez trozada">Nuez trozada</option>
                         <option value="Almendra fileteada">Almendra fileteada</option>
                         <option value="Galleta Lotus">Galleta Lotus</option>
                         <option value="Galleta Oreo">Galleta Oreo</option>
                         <option value="Bomboncitos de chocolate">Bomboncitos de chocolate</option>
+                        <option value="Kinder Delice">Kinder Delice</option>
                         <option value="Sin topping">Sin topping</option>
                     </select>
                 </div>
@@ -468,6 +479,7 @@
                     <select id="croissantHeladoSelect">
                         <option value="Con Helado">Con Helado Suave</option>
                         <option value="Helado Taro">Helado Suave Taro (+ $10)</option>
+                        <option value="Helado combinado">Helado combinado (+ $10)</option>
                         <option value="Crema batida">Crema batida</option>
                         <option value="Sin Helado">Sin Helado</option>
                     </select>
@@ -487,6 +499,7 @@
                         <option value="Chispas de chocolate">Chispas de chocolate</option>
                         <option value="Chispas de colores">Chispas de colores</option>
                         <option value="Chispas de yogurt">Chispas de yogurt</option>
+                        <option value="Chispas hallowen">Chispas hallowen</option>
                         <option value="Nuez trozada">Nuez trozada</option>
                         <option value="Almendra fileteada">Almendra fileteada</option>
                         <option value="Galleta Lotus">Galleta Lotus</option>
@@ -508,6 +521,8 @@
                     <select id="sundaeHeladoSelect">
                         <option value="Helado Tradicional">Helado Suave Tradicional</option>
                         <option value="Helado Taro">Helado Suave Taro (+ $10.00)</option>
+                        <option value="Helado combinado">Helado combinado(+ $10.00)</option>
+                       
                     </select>
                 </div>
                 <div class="form-group" id="groupSundaeMermelada">
@@ -517,7 +532,7 @@
                         <option value="Kiwi">Kiwi</option>
                         <option value="Maracuyá">Maracuyá</option>
                         <option value="Moras">Moras</option>
-                        <option value="Mango">Mango</option>
+                        <option value="Moras">Moras</option>
                         <option value="Hersheys">Hersheys</option>
                         <option value="Lechera">Lechera</option>
                         <option value="Caramelo">Caramelo</option>
@@ -561,6 +576,7 @@
                     <label>Sabor de Helado</label>
                     <select id="conoHeladoSelect">
                         <option value="Helado Tradicional">Helado Suave Tradicional</option>
+                        <option value="Helado combinado">Helado combinado (+ $5.00)</option>
                         <option value="Helado Taro">Helado Suave Taro (+ $5.00)</option>
                     </select>
                 </div>
@@ -570,8 +586,16 @@
                 </div>
             </div>
 
-            <!-- Extras Cookie Sandwich -->
+            <!-- Extras Cookie Sandwich (CON OPCIÓN DE HELADO DE TARO) -->
             <div id="cookieExtras" class="extra-options" style="display:none;">
+                <div class="form-group">
+                    <label>Sabor de Helado</label>
+                    <select id="cookieHeladoSelect">
+                        <option value="Helado Tradicional">Helado Suave Tradicional</option>
+                        <option value="Helado combinado">Helado combinado (+ $5.00)</option>
+                        <option value="Helado Taro">Helado Suave Taro (+ $10.00)</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>Topping Incluido</label>
                     <select id="cookieToppingSelect">
@@ -579,6 +603,7 @@
                         <option value="Chispas de colores">Chispas de colores</option>
                         <option value="Nuez trozada">Nuez trozada</option>
                         <option value="Almendra fileteada">Almendra fileteada</option>
+                        <option value="Chispas hallowen">Chispas hallowen</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -601,6 +626,7 @@
                     <select id="frappeHeladoSelect">
                         <option value="Sin Helado">Sin Helado (+ $0)</option>
                         <option value="Con Helado Suave">Con Helado Suave Tradicional (+ $15.00)</option>
+                        <option value="Helado combinado">Helado combinado (+ $5.00)</option>
                         <option value="Con Helado Taro">Con Helado Suave Taro (+ $25.00)</option>
                     </select>
                 </div>
@@ -738,7 +764,6 @@
                 </div>
             </div>
 
-            <!-- Apartado actualizado: Croissants en lugar de Pan de Muerto -->
             <div class="inventory-card">
                 <h3>🥐 Croissants</h3>
                 <div class="inventory-count" id="stockCroissantDisplay">Cargando...</div>
@@ -748,7 +773,6 @@
                 </div>
             </div>
 
-            <!-- Apartado con botón rápido de bolsa usada -->
             <div class="inventory-card">
                 <h3>🍦 Bolsas de Helado</h3>
                 <div class="inventory-count" id="stockBolsasHeladoDisplay">Cargando...</div>
@@ -842,7 +866,6 @@
         { val: "Galleta Lotus", text: "Galleta Lotus (+ $10.00)" },
         { val: "Galleta Oreo", text: "Galleta Oreo (+ $10.00)" },
         { val: "Bomboncitos de chocolate", text: "Bomboncitos (+ $10.00)" },
-        { val: "Kinder Delice", text: "Kinder Delice(+ $20.00)" },
         { val: "Mermelada de Fresa", text: "Mermelada de Fresa (+ $10.00)" },
         { val: "Mermelada de Kiwi", text: "Mermelada de Kiwi (+ $10.00)" },
         { val: "Mermelada de Maracuyá", text: "Mermelada de Maracuyá (+ $10.00)" },
@@ -852,7 +875,9 @@
         { val: "Untado Chocolate Abuelita", text: "Untado Choc. Abuelita (+ $10.00)" },
         { val: "Untado Lechera", text: "Untado Lechera (+ $10.00)" },
         { val: "Untado Lotus", text: "Untado Lotus (+ $10.00)" },
-        { val: "Untado Crema de Pistache", text: "Untado Pistache (+ $10.00)" }
+        { val: "Untado Crema de Pistache", text: "Untado Pistache (+ $10.00)" },
+        { val: "Chispas hallowen", text: "Chispas hallowen (+ $10.00)" }
+        
     ];
 
     let carrito = [];
@@ -861,7 +886,7 @@
     let stockCroissants = 0;
     let stockBolsasHelado = 0;
 
-    let productoActual = "Vórtice";
+    let productoActual = "";
     let comandas = JSON.parse(localStorage.getItem("vortice_comandas") || "[]");
 
     window.onload = function() {
@@ -877,7 +902,7 @@
             });
         });
 
-        seleccionarProducto("Vórtice");
+        seleccionarProducto("");
         cargarInventarioNube();
         renderKDS();
         setInterval(actualizarTiemposKDS, 30000);
@@ -886,6 +911,14 @@
     function renderCatalogoNav() {
         const nav = document.getElementById("catalogoNav");
         nav.innerHTML = "";
+
+        const btnSelecciona = document.createElement("button");
+        btnSelecciona.className = "btn-producto-tab btn-neutro active";
+        btnSelecciona.textContent = "🔘 Selecciona...";
+        btnSelecciona.id = "tab-btn-selecciona";
+        btnSelecciona.onclick = () => seleccionarProducto("");
+        nav.appendChild(btnSelecciona);
+
         for (let prod in CATALOGO) {
             const btn = document.createElement("button");
             btn.className = "btn-producto-tab";
@@ -897,11 +930,29 @@
 
     function seleccionarProducto(prod) {
         productoActual = prod;
+        
         document.querySelectorAll(".btn-producto-tab").forEach(btn => {
-            btn.classList.toggle("active", btn.textContent === prod);
+            if (prod === "") {
+                btn.classList.toggle("active", btn.id === "tab-btn-selecciona");
+            } else {
+                btn.classList.toggle("active", btn.textContent === prod);
+            }
         });
 
-        document.getElementById("tituloProductoSeleccionado").textContent = `Personalizar: ${prod}`;
+        const titulo = document.getElementById("tituloProductoSeleccionado");
+        const msg = document.getElementById("mensajeSinSeleccion");
+        const formCampos = document.getElementById("formularioCampos");
+
+        if (!prod) {
+            titulo.textContent = "Selecciona un producto arriba";
+            msg.style.display = "block";
+            formCampos.style.display = "none";
+        } else {
+            titulo.textContent = `Personalizar: ${prod}`;
+            msg.style.display = "none";
+            formCampos.style.display = "grid";
+        }
+
         alCambiarProducto();
     }
 
@@ -957,7 +1008,6 @@
             
             stockVortices = parseFloat(data.vortices ?? data.vortice) || 0;
             stockGalletas = parseInt(data.cookies ?? data.cookie) || 0;
-            // Admite 'croissants', 'croissant' o respaldo de 'panMuerto' si aún no se renombra la clave en el script
             stockCroissants = parseInt(data.croissants ?? data.croissant ?? data.panMuerto) || 0;
             stockBolsasHelado = parseInt(data.bolsasHelado) || 0;
             renderStock();
@@ -1018,7 +1068,6 @@
         }
     }
 
-    // Función rápida para registrar uso de una bolsa de helado
     async function descontarUnaBolsaHelado() {
         if (stockBolsasHelado <= 0) {
             alert("⚠️ El stock de bolsas de helado ya es 0.");
@@ -1044,6 +1093,8 @@
         document.getElementById("cookieExtras").style.display = "none";
         document.getElementById("frappeExtras").style.display = "none";
         document.getElementById("cafeExtras").style.display = "none";
+
+        if (!prod) return;
 
         const labelVariante = document.getElementById("labelVariante");
         varSelect.innerHTML = "";
@@ -1145,10 +1196,15 @@
 
     function agregarAlCarrito() {
         const prod = productoActual;
+        if (!prod) {
+            alert("Por favor selecciona un producto en la barra superior.");
+            return;
+        }
+
         const variante = document.getElementById("varianteSelect").value;
         const cantidad = parseInt(document.getElementById("cantidadInput").value);
 
-        if (!prod || !variante || cantidad <= 0) {
+        if (!variante || cantidad <= 0) {
             alert("Por favor selecciona una opción válida.");
             return;
         }
@@ -1270,9 +1326,20 @@
             toppingExtra = detallesCono.join(" / ");
         } else if (prod === "Cookie Sandwich") {
             precio = CATALOGO[prod][variante];
+            const heladoCookie = document.getElementById("cookieHeladoSelect").value;
             let topIncluido = document.getElementById("cookieToppingSelect").value;
             let topExtra = document.getElementById("cookieExtraToppingSelect").value;
-            let extrasArray = [`Topping: ${topIncluido}`];
+            let extrasArray = [];
+
+            // +10 si elige Helado de Taro en la Cookie
+            if (heladoCookie === "Helado Taro") {
+                precio += 10;
+                extrasArray.push("Helado Suave Taro (+ $10)");
+            } else {
+                extrasArray.push("Helado Tradicional");
+            }
+
+            extrasArray.push(`Topping: ${topIncluido}`);
             
             if (topExtra !== "Ninguno") {
                 precio += 10;
@@ -1442,7 +1509,6 @@
                 reqVortices: reqVortices,
                 reqGalletas: reqGalletas,
                 reqCroissants: reqCroissants,
-                // Mantiene compatibilidad con versiones previas de Google Apps Script
                 reqPanMuerto: reqCroissants
             }
         };
@@ -1462,6 +1528,7 @@
                 alert(`✅ Venta registrada exitosamente.\n📋 Venta N°: ${data.numOrden}\n🍳 Enviada a Comandas.`);
                 carrito = [];
                 renderCarrito();
+                seleccionarProducto("");
                 await cargarInventarioNube();
             } else {
                 alert("❌ Error en el servidor: " + data.message);
