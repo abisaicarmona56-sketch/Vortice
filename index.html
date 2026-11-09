@@ -1260,10 +1260,10 @@
 
             if (helado === "Helado Taro") {
                 precio += 10;
-                detalles.push("Helado Suave Taro (+ $10)");
+                detalles.push("Helado Suave Temporada (+ $10)");
             } else if (helado === "Helado combinado") {
                 precio += 15;
-                detalles.push("Helado Combinado Taro/Nat (+ $15)");
+                detalles.push("Helado Combinado Tem/Nat (+ $15)");
             } else {
                 detalles.push(helado);
             }
@@ -1288,10 +1288,10 @@
 
             if (heladoSundae === "Helado Taro") {
                 precio += 10;
-                extrasArray.push("Helado Suave Taro (+ $10)");
+                extrasArray.push("Helado Suave Temporada (+ $10)");
             } else if (heladoSundae === "Helado combinado") {
                 precio += 15;
-                extrasArray.push("Helado Combinado Taro/Nat (+ $15)");
+                extrasArray.push("Helado Combinado Tem/Nat (+ $15)");
             } else {
                 extrasArray.push("Helado Tradicional");
             }
@@ -1320,12 +1320,12 @@
             const heladoCono = document.getElementById("conoHeladoSelect").value;
             let detallesCono = [];
 
-            if (heladoCono === "Helado Taro") {
+            if (heladoCono === "Helado Temporada") {
                 precio += 5;
                 detallesCono.push("Helado Suave Taro (+ $5)");
             } else if (heladoCono === "Helado combinado") {
-                precio += 10;
-                detallesCono.push("Helado Combinado Taro/Nat (+ $10)");
+                precio += 5;
+                detallesCono.push("Helado Combinado Tem/Nat (+ $10)");
             } else {
                 detallesCono.push("Helado Tradicional");
             }
@@ -1343,12 +1343,12 @@
             let topExtra = document.getElementById("cookieExtraToppingSelect").value;
             let extrasArray = [];
 
-            if (heladoCookie === "Helado Taro") {
+            if (heladoCookie === "Helado Temporada") {
                 precio += 10;
-                extrasArray.push("Helado Suave Taro (+ $10)");
+                extrasArray.push("Helado Suave temporada (+ $10)");
             } else if (heladoCookie === "Helado combinado") {
-                precio += 15;
-                extrasArray.push("Helado Combinado Taro/Nat (+ $15)");
+                precio += 10;
+                extrasArray.push("Helado Combinado Tem/Nat (+ $10)");
             } else {
                 extrasArray.push("Helado Tradicional");
             }
