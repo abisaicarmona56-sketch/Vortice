@@ -73,10 +73,73 @@
         .btn-corte:hover { background-color: var(--color5); }
 
         .display-corte {
-            font-size: 1.05rem;
+            font-size: 1.0rem;
             font-weight: bold;
             color: var(--color4);
             margin-left: auto;
+        }
+
+        .display-corte.negativo {
+            color: var(--danger);
+        }
+
+        /* Estilos del apartado Gastos del Día */
+        .gastos-section {
+            background: var(--color1);
+            border: 1px solid var(--color2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .gastos-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .gastos-header h2 {
+            margin: 0;
+            border: none;
+            padding: 0;
+        }
+
+        .gastos-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.2fr auto;
+            gap: 12px;
+            align-items: flex-end;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .gastos-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .gastos-tabla-wrapper {
+            background: #ffffff;
+            border-radius: 6px;
+            border: 1px solid var(--color2);
+            overflow-x: auto;
+        }
+
+        .gastos-tabla-wrapper table {
+            margin-bottom: 0;
+        }
+
+        .gastos-resumen {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            font-weight: bold;
+            color: var(--color5);
+            font-size: 0.95rem;
         }
 
         .catalogo-nav {
@@ -150,6 +213,7 @@
         }
 
         button { cursor: pointer; font-weight: bold; }
+        button:disabled { opacity: 0.65; cursor: not-allowed; }
 
         .btn-add { 
             background-color: var(--color4); 
@@ -158,7 +222,7 @@
             padding: 10px; 
             font-size: 1rem;
         }
-        .btn-add:hover { background-color: var(--color5); }
+        .btn-add:hover:not(:disabled) { background-color: var(--color5); }
         .btn-delete { background-color: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; }
        
         .btn-pay {
@@ -169,7 +233,7 @@
             padding: 12px 20px;
             border-radius: 6px;
         }
-        .btn-pay:hover { background-color: var(--color4); }
+        .btn-pay:hover:not(:disabled) { background-color: var(--color4); }
 
         table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.9rem; }
         th, td { padding: 10px; border-bottom: 1px solid var(--color2); text-align: left; }
@@ -385,7 +449,7 @@
         <h2 id="tituloProductoSeleccionado" style="margin-top:0; border:none; padding:0; margin-bottom:15px;">Selecciona un producto arriba</h2>
         
         <div id="mensajeSinSeleccion" style="text-align: center; padding: 25px 10px; color: var(--color4); font-weight: bold; font-size: 1.05rem;">
-            👆 Toca alguno de los productos de la barra superior para abrir sus opciones de preparación.
+         Toca alguno de los productos de la barra superior para abrir sus opciones de preparación.
         </div>
 
         <div class="grid-form" id="formularioCampos" style="display:none;">
@@ -435,13 +499,8 @@
                 </div>
                 <div class="form-group">
                     <label>Helado Suave</label>
-                    <select id="vorticeHeladoSelect">
-                        <option value="Con Helado">Con Helado Suave</option>
-                        <option value="Helado Taro">Helado Suave Temporada (+ $10)</option>
-                        <option value="Helado combinado">Helado Combinado Tem/Nat (+ $10)</option>
-                        <option value="Crema batida">Crema batida</option>
-                        <option value="Sin Helado">Sin Helado</option>
-                    </select>
+                    <!-- Se llena desde la variable HELADOS en el script -->
+                    <select id="vorticeHeladoSelect"></select>
                 </div>
                 <div class="form-group">
                     <label>Topping Superior Incluido</label>
@@ -455,7 +514,6 @@
                         <option value="Galleta Lotus">Galleta Lotus</option>
                         <option value="Galleta Oreo">Galleta Oreo</option>
                         <option value="Bomboncitos de chocolate">Bomboncitos de chocolate</option>
-                        <option value="Kinder Delice">Kinder Delice</option>
                         <option value="Sin topping">Sin topping</option>
                     </select>
                 </div>
@@ -476,13 +534,7 @@
             <div id="croissantPanExtras" class="extra-options" style="display:none;">
                 <div class="form-group">
                     <label>Helado Suave</label>
-                    <select id="croissantHeladoSelect">
-                        <option value="Con Helado">Con Helado Suave</option>
-                        <option value="Helado Taro">Helado Suave Temporada (+ $10)</option>
-                        <option value="Helado combinado">Helado Combinado Tem/Nat (+ $10)</option>
-                        <option value="Crema batida">Crema batida</option>
-                        <option value="Sin Helado">Sin Helado</option>
-                    </select>
+                    <select id="croissantHeladoSelect"></select>
                 </div>
                 <div class="form-group">
                     <label>Fruta Incluida</label>
@@ -518,11 +570,7 @@
             <div id="sundaeExtras" class="extra-options" style="display:none;">
                 <div class="form-group">
                     <label>Base de Helado</label>
-                    <select id="sundaeHeladoSelect">
-                        <option value="Helado Tradicional">Helado Suave Natural</option>
-                        <option value="Helado Taro">Helado Suave Temporada (+ $10.00)</option>
-                        <option value="Helado combinado">Helado Combinado Tem/Nat (+ $10.00)</option>
-                    </select>
+                    <select id="sundaeHeladoSelect"></select>
                 </div>
                 <div class="form-group" id="groupSundaeMermelada">
                     <label>Mermelada / Untado Incluido</label>
@@ -554,6 +602,7 @@
                         <option value="Ninguna">No</option>
                         <option value="Fresa">Fresa (+ $10.00)</option>
                         <option value="Durazno en almíbar">Durazno (+ $10.00)</option>
+                        <option value="Mixto">Mixto (+ $10.00)</option>
                     </select>
                 </div>
                 <div class="form-group" id="groupSundaeToppingExtra">
@@ -573,11 +622,7 @@
             <div id="conoExtras" class="extra-options" style="display:none;">
                 <div class="form-group">
                     <label>Sabor de Helado</label>
-                    <select id="conoHeladoSelect">
-                        <option value="Helado Tradicional">Helado Suave Tradicional</option>
-                        <option value="Helado Taro">Helado Suave Temporada (+ $5.00)</option>
-                        <option value="Helado combinado">Helado Combinado Tem/Nat (+ $5.00)</option>
-                    </select>
+                    <select id="conoHeladoSelect"></select>
                 </div>
                 <div class="form-group" id="groupConoTopping" style="display:none;">
                     <label>Topping Especial Incluido</label>
@@ -589,11 +634,7 @@
             <div id="cookieExtras" class="extra-options" style="display:none;">
                 <div class="form-group">
                     <label>Sabor de Helado</label>
-                    <select id="cookieHeladoSelect">
-                        <option value="Helado Tradicional">Helado Suave Temporada</option>
-                        <option value="Helado Taro">Helado Suave Temporada (+ $10.00)</option>
-                        <option value="Helado combinado">Helado Combinado Tem/Nat (+ $10.00)</option>
-                    </select>
+                    <select id="cookieHeladoSelect"></select>
                 </div>
                 <div class="form-group">
                     <label>Topping Incluido</label>
@@ -714,7 +755,7 @@
     <!-- 6. PANTALLA DE COMANDAS KDS -->
     <div class="kds-container">
         <div class="kds-header">
-            <h2>🍳 Pantalla de Comandas de Preparación (KDS)</h2>
+            <h2>Pantalla de Comandas de Preparación (KDS)</h2>
         </div>
 
         <div class="kds-columns">
@@ -736,7 +777,60 @@
         </div>
     </div>
 
-    <!-- 7. MINI INVENTARIO NUBE ACTUALIZADO -->
+    <!-- 7. APARTADO GASTOS DEL DÍA -->
+    <div class="gastos-section">
+        <div class="gastos-header">
+            <h2>💸 Gastos del día</h2>
+            <button class="btn-sync" onclick="cargarGastosHoy()">🔄 Actualizar Gastos</button>
+        </div>
+
+        <div class="gastos-form">
+            <div class="form-group">
+                <label for="gastoConceptoInput">Concepto</label>
+                <input type="text" id="gastoConceptoInput" placeholder="Ej. Hielo, Gas, Bolsas...">
+            </div>
+
+            <div class="form-group">
+                <label for="gastoMontoInput">Monto ($)</label>
+                <input type="number" id="gastoMontoInput" step="0.01" min="0.01" placeholder="0.00">
+            </div>
+
+            <div class="form-group">
+                <label for="gastoMetodoSelect">Se pagó con</label>
+                <select id="gastoMetodoSelect">
+                    <option value="Efectivo">Efectivo de caja</option>
+                    <option value="Tarjeta">Tarjeta</option>
+                </select>
+            </div>
+
+            <button class="btn-add" id="btnRegistrarGasto" onclick="registrarGasto()">💸 Registrar Gasto</button>
+        </div>
+
+        <div class="gastos-tabla-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Concepto</th>
+                        <th>Método</th>
+                        <th class="text-right">Monto</th>
+                    </tr>
+                </thead>
+                <tbody id="gastosHoyBody">
+                    <tr>
+                        <td colspan="4" class="text-center">Cargando gastos de hoy...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="gastos-resumen">
+            <span id="gastosDesgloseMetodo">💵 Efectivo: $0.00 | 💳 Tarjeta: $0.00</span>
+            <span id="gastosTotalHoy" style="font-size: 1.05rem;">Total gastos hoy: $0.00</span>
+        </div>
+    </div>
+
+    <!-- 8. MINI INVENTARIO NUBE ACTUALIZADO -->
     <div class="inventory-section">
         <div class="inventory-header">
             <h2>📦 Mini Inventario Nube</h2>
@@ -784,10 +878,51 @@
 </div>
 
 <!-- ============================================================== -->
-<!-- 8. LÓGICA DE PROGRAMACIÓN (JAVASCRIPT)                          -->
+<!-- 9. LÓGICA DE PROGRAMACIÓN (JAVASCRIPT)                         -->
 <!-- ============================================================== -->
 <script>
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbxzfmxfWf2xtHzKnSwcGVUEOhyvSlvCzWrXA0H7M_UmqpsYGCzUn9wNw8sFgjkQfRyLdQ/exec";
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbwh82QT2i7FkTpCHwgBPuGfZbhnpHt4kQ78a5Mn3RAoTEF5gUHzNzJAW_J7kzUx-JBzhQ/exec";
+
+    // ===== HELADOS: cambia aquí los nombres y los recargos =====
+    const HELADOS = {
+        natural:    "Helado Natural",
+        temporada1: "Helado de Temporada 1",
+        temporada3: "Combinado"
+    };
+
+    // Recargo por tipo de helado en cada producto
+    const RECARGO_HELADO = {
+        vortice:   { natural: 0, temporada1: 10, temporada3: 10 },
+        croissant: { natural: 0, temporada1: 10, temporada3: 10 },
+        sundae:    { natural: 0, temporada1: 10, temporada3: 10 },
+        cono:      { natural: 0, temporada1: 5,  temporada3: 5  },
+        cookie:    { natural: 0, temporada1: 10, temporada3: 10 }
+    };
+
+    // Texto para carrito/comanda: "Helado de Temporada 1 (+ $10)"
+    function detalleHelado(producto, clave) {
+        const r = RECARGO_HELADO[producto][clave];
+        return r > 0 ? `${HELADOS[clave]} (+ $${r})` : HELADOS[clave];
+    }
+
+    // Llena un select de helado desde la variable (extras = opciones fijas al final)
+    function llenarSelectHelado(selectId, producto, extras = []) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = "";
+        for (const clave in HELADOS) {
+            const r = RECARGO_HELADO[producto][clave];
+            const opt = document.createElement("option");
+            opt.value = clave;
+            opt.textContent = r > 0 ? `${HELADOS[clave]} (+ $${r}.00)` : HELADOS[clave];
+            select.appendChild(opt);
+        }
+        extras.forEach(txt => {
+            const opt = document.createElement("option");
+            opt.value = txt;
+            opt.textContent = txt;
+            select.appendChild(opt);
+        });
+    }
 
     const CATALOGO = {
         "Vórtice": {
@@ -805,7 +940,9 @@
             "Chocolate abuelita": 95,
             "Nutella": 95,
             "Pistache": 95,
-            "Lotus": 95
+            "Lotus": 95,
+            "Snow Croissant": 105,
+            
         },
         "Sundae": {
             "Clásico": {
@@ -826,11 +963,11 @@
         "Cookie Sandwich": { "Sencillo": 70 },
         "Galletas de temporada": { "Tradicional": 40 },
         "Frappé": {
-            "Pan de Muerto": { "Chico": 45, "Grande": 50 },
-            "Purple Monster (Taro + moras + ojos)": { "Chico": 90, "Grande": 100 },
-            "Bloody Passion (Maracuyá + fresa + ojos)": { "Chico": 90, "Grande": 100 },
-            "Frankie Matcha (Matcha + kiwi + ojos)": { "Chico": 90, "Grande": 100 },
-            "Pan de Muerto Frappé (Pan de muerto + café)": { "Chico": 90, "Grande": 100 },
+            "Santa Claus (Chocolate Blanco + Mermelada de Fresa)": { "Chico": 90, "Grande": 100 },
+            "Grinch Pistache (Pistache + Espresso)": { "Chico": 90, "Grande": 100 },
+            "Chocolate Claus (Chocolate Abuelita+ Malvaviscos)": { "Chico": 90, "Grande": 100 },
+            "Rompope Navideño (Rompope + Canela)": { "Chico": 90, "Grande": 100 },
+            "Red Velvet": { "Chico": 90, "Grande": 100 },
             "Chocolate": { "Chico": 70, "Grande": 80 },
             "Horchata": { "Chico": 70, "Grande": 80 },
             "Capuchino": { "Chico": 70, "Grande": 80 },
@@ -843,8 +980,11 @@
             "Piña colada": { "Chico": 75, "Grande": 85 }
         },
         "Café": {
-            "Pan de Muerto": { "Chico": 45, "Grande": 50 },
-            "Pumpkin Spice Latte": { "Chico": 80, "Grande": 90 },
+            "Chocolate Claus (Chocolate Abuelita+ Malvaviscos)": { "Chico": 90, "Grande": 100 },
+            "Santa Claus (Chocolate Blanco + Mermelada de Fresa)": { "Chico": 90, "Grande": 100 },
+            "Red Velvet": { "Chico": 90, "Grande": 100 },
+            "Grinch Pistache (Pistache + Espresso)": { "Chico": 90, "Grande": 100 },
+            "Rompope Navideño (Rompope + Canela)": { "Chico": 90, "Grande": 100 },
             "Capuchino": { "Chico": 50, "Grande": 60 },
             "Late": { "Chico": 50, "Grande": 60 },
             "Chocolate caliente": { "Chico": 40, "Grande": 45 },
@@ -877,7 +1017,8 @@
         { val: "Untado Lechera", text: "Untado Lechera (+ $10.00)" },
         { val: "Untado Lotus", text: "Untado Lotus (+ $10.00)" },
         { val: "Untado Crema de Pistache", text: "Untado Pistache (+ $10.00)" },
-        { val: "Chispas hallowen", text: "Chispas hallowen (+ $10.00)" }
+        { val: "Chispas hallowen", text: "Chispas hallowen (+ $10.00)" },
+        { val: "Kinder delice", text: "Kinder delice (+ $15.00)" }
     ];
 
     let carrito = [];
@@ -902,8 +1043,16 @@
             });
         });
 
+        // Selects de helado generados desde la variable HELADOS
+        llenarSelectHelado("vorticeHeladoSelect", "vortice", ["Crema batida", "Sin Helado"]);
+        llenarSelectHelado("croissantHeladoSelect", "croissant", ["Crema batida", "Sin Helado"]);
+        llenarSelectHelado("sundaeHeladoSelect", "sundae");
+        llenarSelectHelado("conoHeladoSelect", "cono");
+        llenarSelectHelado("cookieHeladoSelect", "cookie");
+
         seleccionarProducto("");
         cargarInventarioNube();
+        cargarGastosHoy();
         renderKDS();
         setInterval(actualizarTiemposKDS, 30000);
     };
@@ -930,7 +1079,7 @@
 
     function seleccionarProducto(prod) {
         productoActual = prod;
-        
+
         document.querySelectorAll(".btn-producto-tab").forEach(btn => {
             if (prod === "") {
                 btn.classList.toggle("active", btn.id === "tab-btn-selecciona");
@@ -966,34 +1115,191 @@
         return `${fechaTexto} a las ${horas}:${minutos}:${segundos}`;
     }
 
+    // Formatea un número a moneda con signo negativo correcto (ej. -150 -> -$150.00)
+    function formatearMoneda(valor) {
+        const num = Number(valor) || 0;
+        return num < 0 ? `-$${Math.abs(num).toFixed(2)}` : `$${num.toFixed(2)}`;
+    }
+
+    // Evita que texto con < > & rompa la tabla de gastos
+    function escaparHTML(t) {
+        return String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    // Consulta el corte del día integrando ventas, gastos y totales netos
     async function consultarCorte(tipo) {
         const display = document.getElementById("resultadoCorte");
+        display.classList.remove("negativo");
         display.textContent = "Consultando...";
 
         try {
             const res = await fetch(`${URL_GOOGLE_SHEETS}?accion=corteHoy`);
             const data = await res.json();
 
+            if (data.totalGastos === undefined) {
+                alert("⚠️ El Apps Script no está actualizado: el corte no incluye gastos. Publica una nueva versión.");
+            }
+
+            const ventasEfectivo = Number(data.efectivo) || 0;
+            const ventasTarjeta = Number(data.tarjeta) || 0;
+            const ventasTransferencia = Number(data.transferencia) || 0;
+            const totalVentas = Number(data.totalGeneral) || 0;
+
+            const gastosEfectivo = Number(data.gastosEfectivo) || 0;
+            const gastosTarjeta = Number(data.gastosTarjeta) || 0;
+            const totalGastos = Number(data.totalGastos) || 0;
+
+            const efectivoNeto = data.efectivoNeto !== undefined ? Number(data.efectivoNeto) : (ventasEfectivo - gastosEfectivo);
+            const tarjetaNeto = data.tarjetaNeto !== undefined ? Number(data.tarjetaNeto) : (ventasTarjeta - gastosTarjeta);
+            const totalNeto = data.totalNeto !== undefined ? Number(data.totalNeto) : (totalVentas - totalGastos);
+
             if (tipo === "efectivo") {
-                display.textContent = `💵 Efectivo Hoy: $${data.efectivo.toFixed(2)}`;
+                if (efectivoNeto < 0) {
+                    display.classList.add("negativo");
+                    display.textContent = `⚠️ Efectivo en caja: ${formatearMoneda(efectivoNeto)} (Ventas: $${ventasEfectivo.toFixed(2)} - Gastos: $${gastosEfectivo.toFixed(2)})`;
+                } else {
+                    display.textContent = `💵 Efectivo Neto: $${efectivoNeto.toFixed(2)} (Ventas: $${ventasEfectivo.toFixed(2)} - Gastos: $${gastosEfectivo.toFixed(2)})`;
+                }
             } else if (tipo === "transferencia") {
-                display.textContent = `📱 Transferencia Hoy: $${data.transferencia.toFixed(2)}`;
+                display.textContent = `📱 Transferencia Hoy: $${ventasTransferencia.toFixed(2)}`;
             } else if (tipo === "tarjeta") {
-                display.textContent = `💳 Tarjeta Hoy: $${data.tarjeta.toFixed(2)}`;
+                display.textContent = `💳 Tarjeta Neto: ${formatearMoneda(tarjetaNeto)} (Ventas: $${ventasTarjeta.toFixed(2)} - Gastos: $${gastosTarjeta.toFixed(2)})`;
             } else if (tipo === "todos") {
-                display.textContent = `Total Hoy: $${data.totalGeneral.toFixed(2)}`;
+                if (efectivoNeto < 0) {
+                    display.classList.add("negativo");
+                    display.textContent = `⚠️ Neto Hoy: ${formatearMoneda(totalNeto)} | Efectivo en caja negativo: ${formatearMoneda(efectivoNeto)}`;
+                } else {
+                    display.textContent = `Neto Hoy: ${formatearMoneda(totalNeto)} (Ventas: $${totalVentas.toFixed(2)} - Gastos: $${totalGastos.toFixed(2)})`;
+                }
+
+                const avisoNegativo = efectivoNeto < 0
+                    ? `\n⚠️ AVISO: El efectivo neto en caja es NEGATIVO (${formatearMoneda(efectivoNeto)}).`
+                    : "";
+
                 alert(
-                    `📋 CORTE DE HOY:\n\n` +
-                    `💵 Efectivo: $${data.efectivo.toFixed(2)}\n` +
-                    `📱 Transferencia: $${data.transferencia.toFixed(2)}\n` +
-                    `💳 Tarjeta: $${data.tarjeta.toFixed(2)}\n` +
-                    `------------------------------------\n` +
-                    `TOTAL DEL DÍA: $${data.totalGeneral.toFixed(2)}`
+                    `📋 CORTE DE HOY\n\n` +
+                    `VENTAS\n` +
+                    `💵 Efectivo:       $${ventasEfectivo.toFixed(2)}\n` +
+                    `💳 Tarjeta:        $${ventasTarjeta.toFixed(2)}\n` +
+                    `📱 Transferencia:  $${ventasTransferencia.toFixed(2)}\n` +
+                    `Total ventas:      $${totalVentas.toFixed(2)}\n\n` +
+                    `GASTOS\n` +
+                    `💵 Pagado con efectivo: -$${gastosEfectivo.toFixed(2)}\n` +
+                    `💳 Pagado con tarjeta:  -$${gastosTarjeta.toFixed(2)}\n` +
+                    `Total gastos:           -$${totalGastos.toFixed(2)}\n\n` +
+                    `NETO\n` +
+                    `💵 Efectivo en caja:    ${formatearMoneda(efectivoNeto)}\n` +
+                    `💳 Tarjeta neto:        ${formatearMoneda(tarjetaNeto)}\n` +
+                    `📱 Transferencia:       $${ventasTransferencia.toFixed(2)}\n` +
+                    `TOTAL NETO DEL DÍA:     ${formatearMoneda(totalNeto)}` +
+                    avisoNegativo
                 );
             }
         } catch (e) {
             display.textContent = "Error al consultar";
             alert("❌ Error obteniendo corte de caja: " + e.message);
+        }
+    }
+
+    // Registra un nuevo gasto diario en Google Sheets
+    async function registrarGasto() {
+        const conceptoInput = document.getElementById("gastoConceptoInput");
+        const montoInput = document.getElementById("gastoMontoInput");
+        const metodoSelect = document.getElementById("gastoMetodoSelect");
+        const btnGasto = document.getElementById("btnRegistrarGasto");
+
+        const concepto = conceptoInput.value.trim();
+        const monto = parseFloat(montoInput.value);
+        const metodo = metodoSelect.value;
+
+        if (!concepto) {
+            alert("⚠️ Por favor escribe el concepto del gasto.");
+            conceptoInput.focus();
+            return;
+        }
+
+        if (isNaN(monto) || monto <= 0) {
+            alert("⚠️ Por favor ingresa un monto válido mayor a $0.00.");
+            montoInput.focus();
+            return;
+        }
+
+        btnGasto.disabled = true;
+        btnGasto.textContent = "⏳ Guardando...";
+
+        const payload = {
+            accion: "registrarGasto",
+            concepto: concepto,
+            monto: monto,
+            metodo: metodo
+        };
+
+        try {
+            const res = await fetch(URL_GOOGLE_SHEETS, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (data.status === "success") {
+                alert(`✅ Gasto registrado correctamente.\n🧾 Concepto: ${concepto}\n💵 Monto: $${monto.toFixed(2)} (${metodo})`);
+                conceptoInput.value = "";
+                montoInput.value = "";
+                metodoSelect.value = "Efectivo";
+                await cargarGastosHoy();
+            } else {
+                alert("❌ Error al registrar el gasto: " + (data.message || "Error desconocido"));
+            }
+        } catch (error) {
+            alert("❌ Error de conexión al guardar gasto: " + error.message);
+        } finally {
+            btnGasto.disabled = false;
+            btnGasto.textContent = "💸 Registrar Gasto";
+        }
+    }
+
+    // Obtiene y renderiza la lista de gastos del día actual desde Google Sheets
+    async function cargarGastosHoy() {
+        const tbody = document.getElementById("gastosHoyBody");
+        const resumenMetodo = document.getElementById("gastosDesgloseMetodo");
+        const totalEl = document.getElementById("gastosTotalHoy");
+
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center">Cargando gastos de hoy...</td></tr>`;
+
+        try {
+            const res = await fetch(`${URL_GOOGLE_SHEETS}?accion=gastosHoy`);
+            const data = await res.json();
+
+            const lista = data.gastos || [];
+            const gastosEf = Number(data.gastosEfectivo) || 0;
+            const gastosTar = Number(data.gastosTarjeta) || 0;
+            const totalGastos = Number(data.totalGastos) || 0;
+
+            if (lista.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center">No hay gastos registrados hoy.</td></tr>`;
+            } else {
+                tbody.innerHTML = lista.map(g => {
+                    const partesFecha = String(g.fechaHora || "").split(" ");
+                    const hora = partesFecha.length > 1 ? partesFecha[1] : g.fechaHora;
+                    const etiquetaMetodo = g.metodo === "Efectivo" ? "💵 Efectivo de caja" : "💳 Tarjeta";
+                    return `
+                        <tr>
+                            <td>${hora}</td>
+                            <td><strong>${escaparHTML(g.concepto)}</strong></td>
+                            <td>${etiquetaMetodo}</td>
+                            <td class="text-right">$${Number(g.monto).toFixed(2)}</td>
+                        </tr>
+                    `;
+                }).join("");
+            }
+
+            resumenMetodo.textContent = `💵 Efectivo de caja: $${gastosEf.toFixed(2)} | 💳 Tarjeta: $${gastosTar.toFixed(2)}`;
+            totalEl.textContent = `Total gastos hoy: $${totalGastos.toFixed(2)}`;
+        } catch (error) {
+            console.error("Error cargando gastos del día:", error);
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center">Error al cargar los gastos.</td></tr>`;
         }
     }
 
@@ -1005,7 +1311,7 @@
         try {
             let res = await fetch(URL_GOOGLE_SHEETS);
             let data = await res.json();
-            
+
             stockVortices = parseFloat(data.vortices ?? data.vortice) || 0;
             stockGalletas = parseInt(data.cookies ?? data.cookie) || 0;
             stockCroissants = parseInt(data.croissants ?? data.croissant ?? data.panMuerto) || 0;
@@ -1026,7 +1332,7 @@
     async function ajustarStockNube(tipo, valorDirecto = null) {
         let nuevoValor = 0;
         let inputId = "";
-        
+
         if (valorDirecto !== null) {
             nuevoValor = valorDirecto;
         } else {
@@ -1051,12 +1357,12 @@
                 headers: { "Content-Type": "text/plain;charset=utf-8" },
                 body: JSON.stringify(payload)
             });
-            
+
             if (tipo === 'vortice') stockVortices = nuevoValor;
             if (tipo === 'cookie') stockGalletas = nuevoValor;
             if (tipo === 'croissant') stockCroissants = nuevoValor;
             if (tipo === 'bolsasHelado') stockBolsasHelado = nuevoValor;
-            
+
             if (inputId) {
                 const inputEl = document.getElementById(inputId);
                 if (inputEl) inputEl.value = "";
@@ -1082,7 +1388,7 @@
     function alCambiarProducto() {
         const prod = productoActual;
         const varSelect = document.getElementById("varianteSelect");
-        
+
         document.getElementById("vorticeExtras").style.display = "none";
         document.getElementById("croissantPanExtras").style.display = "none";
         document.getElementById("vorticeTamanoGroup").style.display = "none";
@@ -1133,7 +1439,7 @@
             for (let variante in CATALOGO[prod]) {
                 let opt = document.createElement("option");
                 opt.value = variante;
-                
+
                 if (prod === "Frappé" || prod === "Café" || prod === "Vórtice") {
                     opt.textContent = variante;
                 } else {
@@ -1151,7 +1457,7 @@
         const varSelect = document.getElementById("varianteSelect");
         const groupFruta = document.getElementById("groupSundaeFruta");
         const groupMermelada = document.getElementById("groupSundaeMermelada");
-        
+
         varSelect.innerHTML = "";
         const opciones = CATALOGO["Sundae"][tipo];
 
@@ -1227,14 +1533,11 @@
 
             let detalles = [];
 
-            if (helado === "Helado Taro") {
-                precio += 10;
-                detalles.push("Helado Suave Taro (+ $10)");
-            } else if (helado === "Helado combinado") {
-                precio += 10;
-                detalles.push("Helado Combinado Taro/Nat (+ $10)");
+            if (HELADOS[helado]) {
+                precio += RECARGO_HELADO.vortice[helado];
+                detalles.push(detalleHelado("vortice", helado));
             } else {
-                detalles.push(helado);
+                detalles.push(helado); // Crema batida / Sin Helado
             }
 
             detalles.push(`Top: ${top}`);
@@ -1258,14 +1561,11 @@
 
             let detalles = [];
 
-            if (helado === "Helado Taro") {
-                precio += 10;
-                detalles.push("Helado Suave Temporada (+ $10)");
-            } else if (helado === "Helado combinado") {
-                precio += 15;
-                detalles.push("Helado Combinado Tem/Nat (+ $15)");
+            if (HELADOS[helado]) {
+                precio += RECARGO_HELADO.croissant[helado];
+                detalles.push(detalleHelado("croissant", helado));
             } else {
-                detalles.push(helado);
+                detalles.push(helado); // Crema batida / Sin Helado
             }
 
             detalles.push(`Top: ${top}`);
@@ -1286,15 +1586,8 @@
             let vasoExtra = document.getElementById("sundaeVasoExtraSelect").value;
             let extrasArray = [];
 
-            if (heladoSundae === "Helado Taro") {
-                precio += 10;
-                extrasArray.push("Helado Suave Temporada (+ $10)");
-            } else if (heladoSundae === "Helado combinado") {
-                precio += 15;
-                extrasArray.push("Helado Combinado Tem/Nat (+ $15)");
-            } else {
-                extrasArray.push("Helado Tradicional");
-            }
+            precio += RECARGO_HELADO.sundae[heladoSundae];
+            extrasArray.push(detalleHelado("sundae", heladoSundae));
 
             if (tipoSundae === "Clásico") {
                 let mermelada = document.getElementById("sundaeMermeladaSelect").value;
@@ -1320,15 +1613,8 @@
             const heladoCono = document.getElementById("conoHeladoSelect").value;
             let detallesCono = [];
 
-            if (heladoCono === "Helado Temporada") {
-                precio += 5;
-                detallesCono.push("Helado Suave Taro (+ $5)");
-            } else if (heladoCono === "Helado combinado") {
-                precio += 5;
-                detallesCono.push("Helado Combinado Tem/Nat (+ $10)");
-            } else {
-                detallesCono.push("Helado Tradicional");
-            }
+            precio += RECARGO_HELADO.cono[heladoCono];
+            detallesCono.push(detalleHelado("cono", heladoCono));
 
             if (variante === "Especial") {
                 const conoTopping = document.getElementById("conoToppingSelect").value;
@@ -1343,18 +1629,11 @@
             let topExtra = document.getElementById("cookieExtraToppingSelect").value;
             let extrasArray = [];
 
-            if (heladoCookie === "Helado Temporada") {
-                precio += 10;
-                extrasArray.push("Helado Suave temporada (+ $10)");
-            } else if (heladoCookie === "Helado combinado") {
-                precio += 10;
-                extrasArray.push("Helado Combinado Tem/Nat (+ $10)");
-            } else {
-                extrasArray.push("Helado Tradicional");
-            }
+            precio += RECARGO_HELADO.cookie[heladoCookie];
+            extrasArray.push(detalleHelado("cookie", heladoCookie));
 
             extrasArray.push(`Topping: ${topIncluido}`);
-            
+
             if (topExtra !== "Ninguno") {
                 precio += 10;
                 extrasArray.push(`Top Extra: ${topExtra} (+$10)`);
@@ -1617,8 +1896,8 @@
                     const partes = it.toppingExtra.split(" / ");
                     partes.forEach(p => {
                         const esCritico = p.includes("Deslactosada") || p.includes("Sin Helado") || p.includes("Vaso Extra") || p.includes("Shot Extra") || p.includes("Sin untado");
-                        const esTaro = p.includes("Taro") || p.includes("Combinado");
-                        
+                        const esTaro = p.includes(HELADOS.temporada1) || p.includes(HELADOS.temporada3);
+
                         if (esTaro) {
                             badges.push(`<span class="kds-badge taro">🟣 ${p}</span>`);
                         } else if (esCritico) {
@@ -1647,7 +1926,7 @@
                     </div>
                     <div>${itemsHTML}</div>
                     <div class="kds-card-actions">
-                        ${comanda.estado === "preparando" 
+                        ${comanda.estado === "preparando"
                             ? `<button class="btn-kds-ready" onclick="cambiarEstadoComanda(${comanda.id}, 'listo')">✅ Marcar Listo</button>`
                             : `<button class="btn-kds-deliver" onclick="cambiarEstadoComanda(${comanda.id}, 'entregado')">📦 Entregar y Quitar</button>`
                         }
@@ -1674,4 +1953,4 @@
 </script>
 
 </body>
-</html> 
+</html>
