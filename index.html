@@ -367,6 +367,17 @@
             border-color: #7e57c2;
         }
 
+        .kds-pagado {
+            background: rgba(46, 125, 50, 0.25);
+            border: 1px solid #66bb6a;
+            color: #a5d6a7;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
         .kds-card-actions { margin-top: 12px; display: flex; gap: 8px; }
 
         .btn-kds-ready {
@@ -449,7 +460,7 @@
         <h2 id="tituloProductoSeleccionado" style="margin-top:0; border:none; padding:0; margin-bottom:15px;">Selecciona un producto arriba</h2>
         
         <div id="mensajeSinSeleccion" style="text-align: center; padding: 25px 10px; color: var(--color4); font-weight: bold; font-size: 1.05rem;">
-         Toca alguno de los productos de la barra superior para abrir sus opciones de preparación.
+            👆 Toca alguno de los productos de la barra superior para abrir sus opciones de preparación.
         </div>
 
         <div class="grid-form" id="formularioCampos" style="display:none;">
@@ -514,6 +525,7 @@
                         <option value="Galleta Lotus">Galleta Lotus</option>
                         <option value="Galleta Oreo">Galleta Oreo</option>
                         <option value="Bomboncitos de chocolate">Bomboncitos de chocolate</option>
+                        <option value="Kinder Delice">Kinder Delice</option>
                         <option value="Sin topping">Sin topping</option>
                     </select>
                 </div>
@@ -602,7 +614,6 @@
                         <option value="Ninguna">No</option>
                         <option value="Fresa">Fresa (+ $10.00)</option>
                         <option value="Durazno en almíbar">Durazno (+ $10.00)</option>
-                        <option value="Mixto">Mixto (+ $10.00)</option>
                     </select>
                 </div>
                 <div class="form-group" id="groupSundaeToppingExtra">
@@ -755,7 +766,7 @@
     <!-- 6. PANTALLA DE COMANDAS KDS -->
     <div class="kds-container">
         <div class="kds-header">
-            <h2>Pantalla de Comandas de Preparación (KDS)</h2>
+            <h2>🍳 Pantalla de Comandas de Preparación (KDS)</h2>
         </div>
 
         <div class="kds-columns">
@@ -881,20 +892,20 @@
 <!-- 9. LÓGICA DE PROGRAMACIÓN (JAVASCRIPT)                         -->
 <!-- ============================================================== -->
 <script>
-    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbwh82QT2i7FkTpCHwgBPuGfZbhnpHt4kQ78a5Mn3RAoTEF5gUHzNzJAW_J7kzUx-JBzhQ/exec";
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbxzfmxfWf2xtHzKnSwcGVUEOhyvSlvCzWrXA0H7M_UmqpsYGCzUn9wNw8sFgjkQfRyLdQ/exec";
 
     // ===== HELADOS: cambia aquí los nombres y los recargos =====
     const HELADOS = {
         natural:    "Helado Natural",
         temporada1: "Helado de Temporada 1",
-        temporada3: "Combinado"
+        temporada3: "Helado de Temporada 3"
     };
 
     // Recargo por tipo de helado en cada producto
     const RECARGO_HELADO = {
         vortice:   { natural: 0, temporada1: 10, temporada3: 10 },
-        croissant: { natural: 0, temporada1: 10, temporada3: 10 },
-        sundae:    { natural: 0, temporada1: 10, temporada3: 10 },
+        croissant: { natural: 0, temporada1: 10, temporada3: 15 },
+        sundae:    { natural: 0, temporada1: 10, temporada3: 15 },
         cono:      { natural: 0, temporada1: 5,  temporada3: 5  },
         cookie:    { natural: 0, temporada1: 10, temporada3: 10 }
     };
@@ -940,9 +951,7 @@
             "Chocolate abuelita": 95,
             "Nutella": 95,
             "Pistache": 95,
-            "Lotus": 95,
-            "Snow Croissant": 105,
-            
+            "Lotus": 95
         },
         "Sundae": {
             "Clásico": {
@@ -963,11 +972,11 @@
         "Cookie Sandwich": { "Sencillo": 70 },
         "Galletas de temporada": { "Tradicional": 40 },
         "Frappé": {
-            "Santa Claus (Chocolate Blanco + Mermelada de Fresa)": { "Chico": 90, "Grande": 100 },
-            "Grinch Pistache (Pistache + Espresso)": { "Chico": 90, "Grande": 100 },
-            "Chocolate Claus (Chocolate Abuelita+ Malvaviscos)": { "Chico": 90, "Grande": 100 },
-            "Rompope Navideño (Rompope + Canela)": { "Chico": 90, "Grande": 100 },
-            "Red Velvet": { "Chico": 90, "Grande": 100 },
+            "Pan de Muerto": { "Chico": 45, "Grande": 50 },
+            "Purple Monster (Taro + moras + ojos)": { "Chico": 90, "Grande": 100 },
+            "Bloody Passion (Maracuyá + fresa + ojos)": { "Chico": 90, "Grande": 100 },
+            "Frankie Matcha (Matcha + kiwi + ojos)": { "Chico": 90, "Grande": 100 },
+            "Pan de Muerto Frappé (Pan de muerto + café)": { "Chico": 90, "Grande": 100 },
             "Chocolate": { "Chico": 70, "Grande": 80 },
             "Horchata": { "Chico": 70, "Grande": 80 },
             "Capuchino": { "Chico": 70, "Grande": 80 },
@@ -980,11 +989,8 @@
             "Piña colada": { "Chico": 75, "Grande": 85 }
         },
         "Café": {
-            "Chocolate Claus (Chocolate Abuelita+ Malvaviscos)": { "Chico": 90, "Grande": 100 }
-            "Santa Claus (Chocolate Blanco + Mermelada de Fresa)": { "Chico": 90, "Grande": 100 },
-            "Red Velvet": { "Chico": 90, "Grande": 100 },
-            "Grinch Pistache (Pistache + Espresso)": { "Chico": 90, "Grande": 100 },
-            "Rompope Navideño (Rompope + Canela)": { "Chico": 90, "Grande": 100 },
+            "Pan de Muerto": { "Chico": 45, "Grande": 50 },
+            "Pumpkin Spice Latte": { "Chico": 80, "Grande": 90 },
             "Capuchino": { "Chico": 50, "Grande": 60 },
             "Late": { "Chico": 50, "Grande": 60 },
             "Chocolate caliente": { "Chico": 40, "Grande": 45 },
@@ -1017,8 +1023,7 @@
         { val: "Untado Lechera", text: "Untado Lechera (+ $10.00)" },
         { val: "Untado Lotus", text: "Untado Lotus (+ $10.00)" },
         { val: "Untado Crema de Pistache", text: "Untado Pistache (+ $10.00)" },
-        { val: "Chispas hallowen", text: "Chispas hallowen (+ $10.00)" },
-        { val: "Kinder delice", text: "Kinder delice (+ $15.00)" }
+        { val: "Chispas hallowen", text: "Chispas hallowen (+ $10.00)" }
     ];
 
     let carrito = [];
@@ -1028,7 +1033,25 @@
     let stockBolsasHelado = 0;
 
     let productoActual = "";
-    let comandas = JSON.parse(localStorage.getItem("vortice_comandas") || "[]");
+    // Las comandas sin entregar de hace más de estas horas se borran solas (evita "órdenes fantasma" de otro día)
+    const HORAS_MAX_COMANDA = 12;
+
+    // Lee SIEMPRE la versión más reciente guardada (así varias pestañas/pantallas no se pisan)
+    function leerComandasGuardadas() {
+        let lista = [];
+        try { lista = JSON.parse(localStorage.getItem("vortice_comandas") || "[]"); } catch (e) { lista = []; }
+        const limite = Date.now() - HORAS_MAX_COMANDA * 3600000;
+        return lista.filter(c => c.timestamp >= limite);
+    }
+
+    let comandas = leerComandasGuardadas();
+
+    // Identificador único del cobro en curso: si hay que reintentar, se reutiliza y NO se duplica la venta
+    let idTransaccionPendiente = null;
+    function nuevoIdTransaccion() {
+        if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+        return "tx-" + Date.now() + "-" + Math.random().toString(36).slice(2, 10);
+    }
 
     window.onload = function() {
         renderCatalogoNav();
@@ -1049,6 +1072,14 @@
         llenarSelectHelado("sundaeHeladoSelect", "sundae");
         llenarSelectHelado("conoHeladoSelect", "cono");
         llenarSelectHelado("cookieHeladoSelect", "cookie");
+
+        // Si otra pestaña/pantalla cambia las comandas, esta se actualiza al instante
+        window.addEventListener("storage", e => {
+            if (e.key === "vortice_comandas") {
+                comandas = leerComandasGuardadas();
+                renderKDS();
+            }
+        });
 
         seleccionarProducto("");
         cargarInventarioNube();
@@ -1709,11 +1740,13 @@
             subtotal: precio * cantidad
         });
 
+        idTransaccionPendiente = null; // el carrito cambió: será un cobro nuevo
         renderCarrito();
     }
 
     function eliminarItem(index) {
         carrito.splice(index, 1);
+        idTransaccionPendiente = null;
         renderCarrito();
     }
 
@@ -1798,7 +1831,10 @@
             subtotal: item.subtotal
         }));
 
+        if (!idTransaccionPendiente) idTransaccionPendiente = nuevoIdTransaccion();
+
         let payload = {
+            idTransaccion: idTransaccionPendiente,
             fecha: obtenerFechaFormateada(),
             metodoPago: document.getElementById("metodoPagoSelect").value,
             total: totalVenta,
@@ -1821,9 +1857,10 @@
             let data = await res.json();
 
             if (data.status === "success") {
-                agregarComandaKDS(data.numOrden, payloadItems);
+                agregarComandaKDS(data.numOrden, payloadItems, idTransaccionPendiente, payload.metodoPago);
+                idTransaccionPendiente = null;
 
-                alert(`✅ Venta registrada exitosamente.\n📋 Venta N°: ${data.numOrden}\n🍳 Enviada a Comandas.`);
+                alert(`✅ COBRADA y registrada.\n📋 Venta N°: ${data.numOrden}\n🍳 Enviada a Comandas.`);
                 carrito = [];
                 renderCarrito();
                 seleccionarProducto("");
@@ -1833,18 +1870,30 @@
             }
 
         } catch (error) {
-            alert("❌ Error al guardar la venta: " + error.message);
+            alert("⚠️ NO SE PUDO CONFIRMAR EL COBRO (" + error.message + ").\n\nLa orden sigue en pantalla. Vuelve a presionar 'Cobrar' SIN cambiar nada: es seguro, no se duplicará la venta.");
         } finally {
             btnCobrar.disabled = false;
             btnCobrar.textContent = "☁️ Cobrar y Mandar a Comandas";
         }
     }
 
-    function agregarComandaKDS(numOrden, items) {
+    function agregarComandaKDS(numOrden, items, idTransaccion, metodoPago) {
+        comandas = leerComandasGuardadas(); // traer lo más reciente antes de modificar
+
+        // Si esta venta ya está en pantalla (reintento), no se vuelve a agregar
+        if (idTransaccion && comandas.some(c => c.idTransaccion === idTransaccion)) {
+            renderKDS();
+            return;
+        }
+
+        const ahora = new Date();
         const nuevaComanda = {
-            id: Date.now(),
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            idTransaccion: idTransaccion || null,
             numOrden: numOrden,
             timestamp: Date.now(),
+            horaCobro: ahora.toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }),
+            metodoPago: metodoPago || "",
             estado: "preparando",
             items: items
         };
@@ -1859,6 +1908,7 @@
     }
 
     function cambiarEstadoComanda(id, nuevoEstado) {
+        comandas = leerComandasGuardadas(); // traer lo más reciente antes de modificar
         const comanda = comandas.find(c => c.id === id);
         if (comanda) {
             if (nuevoEstado === "entregado") {
@@ -1924,6 +1974,7 @@
                         <span class="kds-order-num">#Orden ${comanda.numOrden}</span>
                         <span class="kds-timer">⏱️ hace ${minutos} min</span>
                     </div>
+                    <div class="kds-pagado">✅ COBRADA ${comanda.horaCobro ? "a las " + comanda.horaCobro : ""}${comanda.metodoPago ? " · " + comanda.metodoPago : ""}</div>
                     <div>${itemsHTML}</div>
                     <div class="kds-card-actions">
                         ${comanda.estado === "preparando"
@@ -1948,6 +1999,7 @@
     }
 
     function actualizarTiemposKDS() {
+        comandas = leerComandasGuardadas();
         renderKDS();
     }
 </script>
